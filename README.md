@@ -1,3 +1,4 @@
+https://docs.google.com/document/d/1S52K6LVKTGlyNN9LsweZ56-1kB6rcFSR/edit
 Danh sach dac
 Cac phep toan tren danh sach dac cac so nguyen
 Khai bao
