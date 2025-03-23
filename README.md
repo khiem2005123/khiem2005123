@@ -1,2913 +1,1899 @@
-https://docs.google.com/document/d/1S52K6LVKTGlyNN9LsweZ56-1kB6rcFSR/edit
-Danh sach dac
-Cac phep toan tren danh sach dac cac so nguyen
-Khai bao
-#define MaxLength 100
-typedef struct {
-    int Elements[MaxLength]; 
-    int Last;              
-} List;
-Ten ham: makenullList()
-void makenullList(List* pL) {
-   	 	pL->Last = 0; 
-}
-Ten ham (function name): member()
-int member(int x, List L) {
-  	for (int i = 0; i < L.Last; i++) {
-          		if (L.Elements[i] == x) {
-          			return 1;
-         		}
-   	} return 0;
-}
-Ten ham (function name): sort()
-void sort(List *pL) {
-    int i, j;
-    for (i = 0; i < pL->Last - 1; i++) {
-        for (j = i + 1; j < pL->Last; j++) {
-            if (pL->Elements[i] > pL->Elements[j]) {
-                int temp = pL->Elements[i];
-                pL->Elements[i] = pL->Elements[j];
-                pL->Elements[j] = temp;
-            }
-        }
-    }
-}
-Ten ham (function name): unionSet()
-void unionSet(List L1, List L2, List *pL) {
-    makenullList(pL); 
-    for (int i = 0; i < L1.Last; i++) {
-        insertSet(L1.Elements[i], pL);
-    }
-    for (int j = 0; j < L2.Last; j++) {
-        if (!member(L2.Elements[j], *pL)) {
-            insertSet(L2.Elements[j], pL);
-        }
-    }
-}
-Ten ham (function name): deleteList()
-void deleteList(Position p, List *pL) {
-    if (p < 1 || p > pL->Last) {
-        printf("Vi tri khong hop le\n");
-        return;
-    }
-    if (pL->Last == 0) {
-        printf("Danh sach rong!\n");
-        return;
-    }
-    for (int Q = p - 1; Q < pL->Last - 1; Q++) {
-        pL->Elements[Q] = pL->Elements[Q + 1];
-    }
-    pL->Last--;
-}
-Ten ham (function name): removeAll()
-void removeAll(int x, List *pL) {
-    int pos;
-    while ((pos = locate(x, *pL)) != pL->Last + 1) { // Neu tim thay x
-        deleteList(pos, pL); // Xoa phan tu tai vi tri tim thay
-    }
-}
-Ten ham (function name): intersection()
-void intersection(List L1, List L2, List *pL) {
-    makenullList(pL);
-    for (int i = 0; i < L1.Last; i++) {
-        ElementType x = L1.Elements[i];
-        if (member(x, L2)) {
-            insertSet(x, pL);
-        }
-    }
-}
-Ten ham (function name): copyEvenNumbers()
-void copyEvenNumbers(List L1, List *pL2) {
-makenullList(pL2); 
-   	for (int i = 0; i < L1.Last; i++) {
-          if (L1.Elements[i] % 2 == 0) {
-          		insertList(L1.Elements[i], pL2->Last + 1, pL2); 
-        }
-    }
-}
-Ten ham (function name): insertSet()
-void insertSet(int x, List *pL) {
-    if (!member(x, *pL)) {
-        pL->Elements[pL->Last] = x;
-        pL->Last++;
-    }
-}
-Ten ham (function name): insertList()
-void insertList(int x, int p, List *pL) {
-    if (p < 1 || p > pL->Last + 1) {
-        printf("Vi tri khong hop le\n");
-        return;
-    }
-    for (int i = pL->Last; i >= p; i--) {
-        pL->Elements[i] = pL->Elements[i - 1];
-    }
-    pL->Elements[p - 1] = x;
-    pL->Last++;
-}
-Ten ham (function name): locate()
-int locate(int x, List L) {
-    for (int i = 0; i < L.Last; i++) {
-        if (L.Elements[i] == x) { 
-            return i + 1; 
-        }
-    }
-    return L.Last + 1;
-}
-Ten ham (function name): normalize()
-void normalize(List *pL) {
-    for (int i = 0; i < pL->Last; i++) {
-        for (int j = i + 1; j < pL->Last; ) {
-            if (pL->Elements[i] == pL->Elements[j]) {
-                for (int k = j; k < pL->Last - 1; k++) {
-                    pL->Elements[k] = pL->Elements[k + 1]; 
-                }
-                pL->Last--; 
-            } else {
-                j++; 
-            }
-        }
-    }
-}
-Ten ham (function name): printOddNumbers()
-void printOddNumbers(List L) {
-    for (int i = 0; i < L.Last; i++) {
-        if (L.Elements[i] % 2 != 0) { 
-            printf("%d ", L.Elements[i]); 
-        }
-    }
-    printf("\n"); 
-}
-Ten ham (function name): printList()
-void printList(List L) {
-    for (int i = 0; i < L.Last; i++) {
-        printf("%d ", L.Elements[i]); 
-    }
-    printf("\n"); 
-}
-Ten ham (function name): getAvg()
-float getAvg(List L) {
-    if (L.Last == 0) {
-        return -10000.0000; 
-    }
-    float sum = 0; 
-    for (int i = 0; i < L.Last; i++) {
-        sum += L.Elements[i]; 
-    }
-    return sum / L.Last; 
-}
-Ten ham (function name): readList()
-void readList(List *pL) {
-    int n, x;
-    makenullList(pL); 
-    scanf("%d", &n); 
-    for (int i = 0; i < n; i++) {
-        scanf("%d", &x); 
-        insertList(x, pL->Last + 1, pL); 
-    }
-}
-Ten ham (function name): readSet()
-void readSet(List *pL) {
-    int n, x;
-    makenullList(pL); 
-    scanf("%d", &n); 
-    for (int i = 0; i < n; i++) {
-        scanf("%d", &x); 
-        if (!member(x, *pL)) {
-            insertSet(x, pL); 
-        }
-    }
-}
-Ten ham (function name): difference()
-void difference(List L1, List L2, List *pL) {
-    makenullList(pL);  
-    for (int i = 0; i < L1.Last; i++) {  
-        if (!member(L1.Elements[i], L2)) {  trong L2
-            insertSet(L1.Elements[i], pL);  
-        }
-    }
-}
-Ten ham (function name): erase()
-void erase(int x, List *pL) {
-    int p = locate(x, *pL);  
-    if (p != -1) {  // Kiem tra neu p la mot vi tri hop le
-        deleteList(p, pL);  
-    }
-}
-Ap dung danh sach dac cac so nguyen
-Bang cach su dung nhung phep toan chuan tren danh sach, hay viet chuong trinh cho phep liet ke cac so le, so chan trong danh sach
-
 #include <stdio.h>
-#include <stdlib.h>
-#define MaxLength 100
-typedef struct {
-    int Elements[MaxLength];
-    int Last;
-} List;
-// Cac ham da duoc dinh nghia truoc do
-void makenullList(List *pL) {
-    pL->Last = 0;
-}
-int member(int x, List L) {
-    for (int i = 0; i < L.Last; i++) {
-        if (L.Elements[i] == x) {
-            return 1;
-        }
-    }
-    return 0;
-}
-void insertSet(int x, List *pL) {
-    if (pL->Last < MaxLength) {
-        pL->Elements[pL->Last] = x;
-        pL->Last++;
-    }
-}
-void printOddNumbers(List L) {
-    for (int i = 0; i < L.Last; i++) {
-        if (L.Elements[i] % 2 != 0) {
-            printf("%d ", L.Elements[i]);
-        }
-    }
-    printf("\n");
-}
-void printEvenNumbers(List L) {
-    for (int i = 0; i < L.Last; i++) {
-        if (L.Elements[i] % 2 == 0) {
-            printf("%d ", L.Elements[i]);
-        }
-    }
-    printf("\n");
-}
-void printList(List L) {
-    for (int i = 0; i < L.Last; i++) {
-        printf("%d ", L.Elements[i]);
-    }
-    printf("\n");
-}
-void readList(List *pL) {
-    int n, x;
-    makenullList(pL);
-    scanf("%d", &n);
-    for (int i = 0; i < n; i++) {
-        scanf("%d", &x);
-        insertSet(x, pL);
-    }
-}
-int main() {
-    List L;
-    readList(&L);
-    printList(L);
-    printOddNumbers(L);
-    printEvenNumbers(L);
-    return 0;
-}
+// HeapSort 11.8
+// QuickSort 21.3
 
-Bang cach su dung nhung phep toan chuan tren danh sach, hay viet chuong trinh cho phep tinh trung binh cong cac phan tu trong danh sach
+// Tham an balo 1 2.92
+// Tham an balo 2 3.91
+// Tham an balo 3 4.94
 
-#include <stdio.h>
-#include <stdlib.h>
+// Nhanh an balo 1 5.94
+// Nhanh an balo 2 6.87
+// Nhanh an balo 3 8.28
 
-#define MaxLength 100
+// QHD balo 1 9.73
+// QHD balo 2 1.085
+// QHD balo 3 1.200
+
+// ATM tham an 13.18
+// TSP tham an 14.12
+
+//TSP nhanh can 15.81
+
+// Tam giac so QHD 17.47
+
+
+typedef int keytype;
+typedef float othertype;
 
 typedef struct {
-    int Elements[MaxLength];
-    int Last;
-} List;
-void makenullList(List *pL) {
-    pL->Last = 0;
-}
-void insertSet(int x, List *pL) {
-    if (pL->Last < MaxLength) {
-        pL->Elements[pL->Last] = x;
-        pL->Last++;
-    }
-}
-void readList(List *pL) {
-    int n, x;
-    makenullList(pL);
-    scanf("%d", &n);
-    for (int i = 0; i < n; i++) {
-        scanf("%d", &x);
-        insertSet(x, pL);
-    }
-}
-void printList(List L) {
-    for (int i = 0; i < L.Last; i++) {
-        printf("%d ", L.Elements[i]);
-    }
-    printf("\n");
-}
-double average(List L) {
-    if (L.Last == 0) return 0;
-    int sum = 0;
-    for (int i = 0; i < L.Last; i++) {
-        sum += L.Elements[i];
-    }
-    return (double)sum / L.Last;
-}
-int main() {
-    List L;
-    readList(&L);
-    printList(L);
-    double avg = average(L);
-    printf("%.3f\n", avg);
-    return 0;
-}
-
-
-Bang cach su dung nhung phep toan chuan tren danh sach, hay viet chuong trinh cho phep tim tap hop hop cua 2 danh sach bieu dien tap hop
-
-#include <stdio.h>
-#include <stdlib.h>
-#define MaxLength 100
-typedef struct {
-    int Elements[MaxLength];
-    int Last;
-} List;
-// Ham khoi tao danh sach
-void makenullList(List *pL) {
-    pL->Last = 0;
-}
-// Ham them phan tu vao danh sach neu chua co
-void insertUnique(int x, List *pL) {
-    for (int i = 0; i < pL->Last; i++) {
-        if (pL->Elements[i] == x) {
-            return; // Neu phan tu da co, khong them
-        }
-    }
-    if (pL->Last < MaxLength) {
-        pL->Elements[pL->Last] = x;
-        pL->Last++;
-    }
-}
-// Ham doc danh sach tu ban phim
-void readList(List *pL) {
-    int n, x;
-    makenullList(pL);
-    scanf("%d", &n);
-    for (int i = 0; i < n; i++) {
-        scanf("%d", &x);
-        insertUnique(x, pL);
-    }
-}
-// Ham hien thi danh sach
-void printList(List L) {
-    for (int i = 0; i < L.Last; i++) {
-        printf("%d ", L.Elements[i]);
-    }
-    printf("\n");
-}
-// Ham tim tap hop hop cua 2 tap hop
-void unionSets(List A, List B, List *C) {
-    makenullList(C);
-    // Them phan tu tu A
-    for (int i = 0; i < A.Last; i++) {
-        insertUnique(A.Elements[i], C);
-    }
-    // Them phan tu tu B
-    for (int i = 0; i < B.Last; i++) {
-        insertUnique(B.Elements[i], C);
-    }
-}
-int main() {
-    List A, B, C;
-    // Nhap tap hop A
-    readList(&A);
-    printList(A);
-    // Nhap tap hop B
-    readList(&B);
-    printList(B);
-    // Tim tap hop hop
-    unionSets(A, B, &C);
-    // printf("Tap hop hop cua A va B: ");
-    printList(C);
-    return 0;
-}
-
-Bang cach su dung nhung phep toan chuan tren danh sach, hay viet chuong trinh cho phep tim hieu cua 2 danh sach bieu dien tap hop
-
-#include <stdio.h>
-
-#define Maxlength 300
-typedef struct {
-    int Elements[Maxlength];
-    int Last;
-} List;
-
-// Khai bao truoc ham member
-int member(int x, List L);
-
-void makenullList(List *pL) {
-    pL->Last = 0;
-}
-
-void insertSet(int x, List *pL) {
-    // Kiem tra xem phan tu da ton tai trong danh sach chua
-    if (!member(x, *pL)) {
-        pL->Elements[pL->Last] = x;
-        pL->Last++;
-    }
-}
-
-void readSet(List *pL) {
-    makenullList(pL);
-    int n, x, i;
-    scanf("%d", &n);
-    for (i = 0; i < n; i++) {
-        scanf("%d", &x);
-        insertSet(x, pL);
-    }
-}
-
-void printList(List L) {
-    int i;
-    for (i = 0; i < L.Last; i++)
-        printf("%d ", L.Elements[i]);
-    printf("\n");
-}
-
-int member(int x, List L) {
-    int i;
-    for (i = 0; i < L.Last; i++) {
-        if (L.Elements[i] == x) return 1; // Neu tim thay, tra ve 1
-    }
-    return 0; // Neu khong tim thay, tra ve 0
-}
-
-void difference(List L1, List L2, List *pL) {
-    makenullList(pL);
-    int i;
-    for (i = 0; i < L1.Last; i++) {
-        if (!member(L1.Elements[i], L2)) {
-            insertSet(L1.Elements[i], pL); // Them vao pL neu khong co trong L2
-        }
-    }
-}
-
-int main() {
-    List L1, L2, L;
-    readSet(&L1);
-    readSet(&L2);
-    printList(L1);
-    printList(L2);
-    difference(L1, L2, &L);
-    printList(L);
-    return 0;
-}
-
-
-
-Bang cach su dung nhung phep toan chuan tren danh sach da cho trong thu vien AListLib.c, hay viet chuong trinh cho phep sap xep danh sach tang dan
-
-#include <stdio.h>
-#include "AListLib.c"
-
-#define MaxLength 100
-// Su dung kieu du lieu khac de tranh xung dot voi AListLib
-typedef struct {
-    int Elements[MaxLength];
-    int Last;
-} MyList;
-void makenullMyList(MyList *pL) {
-    pL->Last = 0;
-}
-void insertToMyList(int x, MyList *pL) {
-    if (pL->Last < MaxLength) {
-        pL->Elements[pL->Last] = x;
-        pL->Last++;
-    }
-}
-void readMyList(MyList *pL) {
-    int n, x;
-    makenullMyList(pL);
-    scanf("%d", &n);
-    for (int i = 0; i < n; i++) {
-        scanf("%d", &x);
-        insertToMyList(x, pL);
-    }
-}
-void printMyList(MyList L) {
-    for (int i = 0; i < L.Last; i++) {
-        printf("%d ", L.Elements[i]);
-    }
-    printf("\n");
-}
-void sortMyList(MyList *pL) {
-    for (int i = 0; i < pL->Last - 1; i++) {
-        for (int j = 0; j < pL->Last - i - 1; j++) {
-            if (pL->Elements[j] > pL->Elements[j + 1]) {
-                // Hoan doi
-                int temp = pL->Elements[j];
-                pL->Elements[j] = pL->Elements[j + 1];
-                pL->Elements[j + 1] = temp;
-            }
-        }
-    }
-}
-int main() {
-    MyList L;
-    readMyList(&L);
-    printMyList(L);
-    sortMyList(&L);
-    printMyList(L);
-    return 0;
-}
-
-
-Bang cach su dung nhung phep toan chuan tren danh sach, hay viet chuong trinh cho phep tim tap hop giao cua 2 danh sach bieu dien tap hop
-
-#include <stdio.h>
-#include "AListLib.c" // Dam bao thu vien nay chua dinh nghia cho cac ham can thiet
-int member(int x, List L) {
-    for (int i = 0; i < L.Last; i++) {
-        if (L.Elements[i] == x) {
-            return 1; // Co thuoc
-        }
-    }
-    return 0; // Khong thuoc
-}
-void insertSet(int x, List *pL) {
-    if (!member(x, *pL)) {
-        pL->Elements[pL->Last] = x; // Them phan tu vao cuoi danh sach
-        pL->Last++; // Tang kich thuoc danh sach
-    }
-}
-void readSet(List *pL) {
-    int n, x;
-    makenullList(pL); // Khoi tao danh sach rong
-    scanf("%d", &n);  // Nhap so phan tu cua tap hop
-    for (int i = 0; i < n; i++) {
-        scanf("%d", &x); // Nhap phan tu x
-        insertSet(x, pL); // Chen x vao tap hop
-    }
-}
-
-void printList(List L) {
-    for (int i = 0; i < L.Last; i++) {
-        printf("%d ", L.Elements[i]); // Hien thi phan tu tai chi so i
-    }
-    printf("\n"); // Xuong dong sau khi in xong
-}
-void intersection(List L1, List L2, List *pL) {
-    makenullList(pL); // Khoi tao danh sach ket qua la rong
-    for (int i = 0; i < L1.Last; i++) {
-        if (member(L1.Elements[i], L2)) {
-            insertSet(L1.Elements[i], pL); // Chen phan tu vao danh sach ket qua
-        }
-    }
-}
-int main() {
-    List L1, L2, result;
-    readSet(&L1);
-    printList(L1);
-    readSet(&L2);
-    printList(L2);
-    intersection(L1, L2, &result);
-    printList(result);
-    return 0;
-}
-
-
-
-Hay hoan chinh chuong trinh tren bang cach dien cac lenh can thiet vao dau ...  de tao thanh 1 chuong trinh cho phep nhap va hien thi 1 danh sach tu ban phim.
-readList(&L);
-printList(L);
-Bang cach su dung nhung phep toan chuan tren danh sach da cho trong thu vien AListLib.c, hay viet chuong trinh nhap mot danh sach tu ban phim va cho phep xoa phan tu x xuat hien dau tien trong danh sach
-
-#include <stdio.h>
-
-#define MaxLength 100
-typedef struct {
-    int Elements[MaxLength]; // Mang chua cac phan tu
-    int Last;                // So luong phan tu hien tai trong danh sach
-} List;
-// Ham khoi tao danh sach rong
-void makenullList(List *pL) {
-    pL->Last = 0;
-}
-// Ham kiem tra phan tu x co trong danh sach hay khong
-int member(int x, List L) {
-    for (int i = 0; i < L.Last; i++) {
-        if (L.Elements[i] == x) {
-            return 1;
-        }
-    }
-    return 0;
-}
-// Ham them phan tu x vao cuoi danh sach
-void insertSet(int x, List *pL) {
-    if (pL->Last < MaxLength) {
-        pL->Elements[pL->Last] = x;
-        pL->Last++;
-    }
-}
-
-// Ham tim vi tri xuat hien dau tien cua phan tu x trong danh sach
-int locate(int x, List L) {
-    for (int i = 0; i < L.Last; i++) {
-        if (L.Elements[i] == x) {
-            return i + 1; // Tra ve vi tri (them 1 de chuyen sang chi so bat dau tu 1)
-        }
-    }
-    return L.Last + 1; // Neu khong tim thay, tra ve L.Last + 1
-}
-// Ham xoa phan tu o vi tri p trong danh sach
-void deleteList(int p, List *pL) {
-    if (p < 1 || p > pL->Last) {
-        return;
-    }
-    for (int Q = p - 1; Q < pL->Last - 1; Q++) {
-        pL->Elements[Q] = pL->Elements[Q + 1];
-    }
-    pL->Last--;
-}
-// Ham xoa phan tu x xuat hien dau tien trong danh sach
-void erase(int x, List *pL) {
-    int p = locate(x, *pL);  // Tim vi tri xuat hien dau tien cua x trong danh sach
-    if (p <= pL->Last) {  // Kiem tra neu p la mot vi tri hop le
-        deleteList(p, pL);  // Xoa phan tu o vi tri p
-    }
-}
-// Ham nhap danh sach tu ban phim
-void readList(List *pL) {
-    int n, x;
-    makenullList(pL); // Khoi tao danh sach rong
-    scanf("%d", &n); // Nhap so phan tu cua danh sach
-    for (int i = 0; i < n; i++) {
-        scanf("%d", &x); // Nhap phan tu x
-        insertSet(x, pL); // Chen x vao danh sach
-    }
-}
-// Ham hien thi danh sach
-void printList(List L) {
-    for (int i = 0; i < L.Last; i++) {
-        printf("%d ", L.Elements[i]); // Hien thi phan tu tai chi so i
-    }
-    printf("\n"); // Xuong dong sau khi in xong
-}
-// Ham main
-int main() {
-    List L;
-    readList(&L); // Nhap danh sach
-    printList(L); // Hien thi danh sach
-    int x;
-    scanf("%d", &x); // Nhap gia tri x can xoa
-    erase(x, &L); // Xoa phan tu x xuat hien dau tien
-    printList(L); // Hien thi danh sach sau khi xoa
-    return 0;
-}
-
-
-Bang cach su dung nhung phep toan chuan tren danh sach, hay viet chuong trinh cho phep liet ke cac so chan va tinh trung binh cong cac phan tu la so chan trong danh sach
-
-#include <stdio.h>
-#define MaxLength 100
-typedef struct {
-    int Elements[MaxLength]; // Mang chua cac phan tu
-    int Last;                // So luong phan tu hien tai trong danh sach
-} List;
-void makenullList(List *pL) {
-    pL->Last = 0;
-}
-void insertSet(int x, List *pL) {
-    pL->Elements[pL->Last] = x;
-    pL->Last++;
-}
-void readList(List *pL) {
-    int n, x;
-    makenullList(pL); // Khoi tao danh sach rong
-    scanf("%d", &n); // Nhap so phan tu cua danh sach
-    for (int i = 0; i < n; i++) {
-        scanf("%d", &x); // Nhap phan tu x
-        insertSet(x, pL); // Chen x vao danh sach
-    }
-}
-void copyEvenNumbers(List L1, List *pL2) {
-    makenullList(pL2); // Khoi tao danh sach ket qua rong
-    for (int i = 0; i < L1.Last; i++) {
-        if (L1.Elements[i] % 2 == 0) {
-            insertSet(L1.Elements[i], pL2);
-        }
-    }
-}
-void printList(List L) {
-    for (int i = 0; i < L.Last; i++) {
-        printf("%d ", L.Elements[i]);
-    }
-    printf("\n");
-}
-float getAvg(List L) {
-    if (L.Last == 0) {
-        return -10000.0000; // Tra ve -10000.0000 neu danh sach rong
-    }
-    float sum = 0;
-    for (int i = 0; i < L.Last; i++) {
-        sum += L.Elements[i];
-    }
-    return sum / L.Last; // Tinh trung binh cong
-}
-int main() {
-    List L, EvenList;
-    readList(&L);
-    printList(L);
-    copyEvenNumbers(L, &EvenList);
-    printList(EvenList);
-    float avg = getAvg(EvenList);
-    printf("%.3f\n", avg);
-    return 0;
-}
-
-
-Bang cach su dung nhung phep toan chuan tren danh sach, hay viet chuong trinh cho phep xoa tat ca cac phan tu x trong danh sach
-
-#include <stdio.h>
-#include "AListLib.c" 
-void readList(List *pL) {
-    int n, x;
-    makenullList(pL); 
-    scanf("%d", &n);   
-    for (int i = 0; i < n; i++) {
-        scanf("%d", &x); // Nhap phan tu x
-        insertList(x, pL->Last + 1, pL); 
-    }
-}
-void printList(List L) {
-    for (int i = 0; i < L.Last; i++) {
-        printf("%d ", L.Elements[i]); 
-    }
-    printf("\n"); 
-}
-void eraseAll(int x, List *pL) {
-    int pos;
-    while ((pos = locate(x, *pL)) != pL->Last + 1) { // Tim vi tri xuat hien dau tien cua x
-        deleteList(pos, pL); // Xoa phan tu o vi tri tim duoc
-    }
-}
-int main() {
-    List L;
-    int x;
-    readList(&L);
-    printList(L);
-    scanf("%d", &x);
-    eraseAll(x, &L);
-    printList(L);
-    return 0;
-}
-
-Cac phep toan cua danh sach sinh vien
-Gia su khai bao kieu DanhSach da duoc dinh nghia.  Hay viet 1 ham hien thi danh sach sinh vien
-Ten ham: hienthi()
-void hienthi(DanhSach L) {
-    for (int i = 0; i < L.n; i++) {
-        float tongDiem = L.A[i].DiemLT + L.A[i].DiemTH1 + L.A[i].DiemTH2;
-        printf("%s - %s - %.2f - %.2f - %.2f - %.2f\n", 
-               L.A[i].MSSV, 
-               L.A[i].HoTen, 
-               L.A[i].DiemLT, 
-               L.A[i].DiemTH1, 
-               L.A[i].DiemTH2, 
-               tongDiem);
-    }
-}
-Gia su khai bao kieu DanhSach da duoc dinh nghia.  Hay viet 1 ham tim vi tri sinh vien co ma so x cho truoc
-Ten ham: tim()
-int tim(const char *x, DanhSach L) {
-    for (int i = 0; i < L.n; i++) {
-        // So sanh ma so sinh vien
-        if (strcmp(L.A[i].MSSV, x) == 0) {
-            return i + 1; // Tra ve vi tri (1-based)
-        }
-    }
-    return L.n + 1; // Neu khong tim thay, tra ve n + 1
-}
-Gia su khai bao kieu DanhSach da duoc dinh nghia. Hay viet 1 ham tra ve 1 danh sach sinh vien rong.
-Ten ham: dsRong()
-DanhSach dsRong() {
-    DanhSach L; 
-    L.n = 0; 
-    return L; 
-}
-Ten ham: xoaSinhVien()
-void xoaSinhVien(const char *x, DanhSach *pL) {
-    char temp[10];
-    int p = tim(temp, *pL); // Goi ham tim voi bien tam
-    if (p != -1) {
-        xoaTai(p, pL); // Xoa sinh vien o vi tri p
-    }
-}
-Khai bao danh sach
-Hay viet khai bao kieu DaThuc la mot danh sach dac dung de luu tru 1 da thuc gom cac truong:
-struct DaThuc {
-    DonThuc A[100]; // Mang cac don thuc, toi da 100 don thuc
-    int so_luong;   // So luong don thuc co trong da thuc
-};
-Hay viet khai bao cho kieu du lieu dong van ban Line (trong do So ky tu toi da = 80) voi cac thanh phan duoc mo ta nhu hinh tren de la mot danh sach dac cac ky tu
-#define MAX_LENGTH 80
-typedef struct {
-    char characters[MAX_LENGTH]; 
-    int length;                 
-} Line;
-Gia su nguoi ta bieu dien mot da giac bang mot danh sach dac co toi da la 100 diem.
-Hay viet khai bao cho kieu du lieu Polygon bieu dien cac da giac theo mo ta tren.
-#define MAX_POINTS 100
-typedef struct {
-    int x;
-    int y;
-} Point;
-typedef struct {
-    Point points[MAX_POINTS];
-    int num_points;
-} Polygon;
-Hay viet khai bao kieu List la mot danh sach dac dung de luu tru 1 danh sach sinh vien theo mo ta tren
-#define MAX_STUDENTS 40
-typedef struct {
-    char maSo[10];        
-    char hoTen[50];    
-    float diemLyThuyet;  
-    float diemThucHanh1; 
-    float diemThucHanh2; 
-} SinhVien;
-typedef struct {
-    SinhVien A[MAX_STUDENTS]; 
-    int n;                     
-} List;
-Hay viet khai bao cho kieu du lieu List (trong do Maxlength=100) voi cac thanh phan duoc mo ta nhu hinh tren de la mot danh sach dac cac so thuc float
-#define MAX_LENGTH 100
-typedef struct {
-    float A[MAX_LENGTH]; 
-    int n;               
-} List;
-
-Dong van ban
-Ten ham: isEmpty()
-Tham so: L kieu Line
-int isEmpty(Line L) {
-    return (L.n == 0) ? 1 : 0;
-}
-Ten ham: printLine()
-void printLine(Line L) {
-    for (int i = 0; i < L.n; i++) {
-        putchar(L.Data[i]);
-    }
-    putchar('\n');
-}
-Ten ham: initLine()
-void initLine(Line *pL) {
-    pL->n = 0;
-}
-Ten ham: appendChar()
-void appendChar(char x, Line *pL) {
-    if (pL->n < MaxLength) {
-        pL->Data[pL->n] = x;
-        pL->n++;
-    } else {
-        printf("LINE IS FULL\n");
-    }
-}
-Viet ham tim vi tri xuat hien dau tien cua ky tu x trong dong van ban
-Ten ham: locate()
-int locate(char x, Line L) {
-    for (int i = 0; i < L.n; i++) {
-        if (L.Data[i] == x) {
-            return i + 1; // Tra ve vi tri (1-based index)
-        }
-    }
-    return L.n + 1; // Neu khong tim thay, tra ve L.n + 1
-}
-Ten ham: removeAt()
-int removeAt(int p, Line *pL) {
-    if (p < 1 || p > pL->n) {
-        return 0; // Vi tri khong hop le
-    }
-    for (int i = p - 1; i < pL->n - 1; i++) {
-        pL->Data[i] = pL->Data[i + 1];
-    }
-    pL->n--;
-    return 1; // Xoa thanh cong
-}
-Ten ham: erasechar()
-int erase(char ch, Line *pL) {
-    int p = locate(ch, *pL);
-    if (p > 0) {
-        return removeAt(p, pL);
-    }
-    return 0; // Ky tu khong ton tai trong dong van ban
-}
-Ten ham: isFull()
-int isFull(Line L) {
-    if (L.n == MaxLength) {
-        return 1; // Dong van ban day
-    } else {
-        return 0; // Dong van ban khong day
-    }
-}
-Ten ham: countAlphabet()
-int countAlphabet(Line L) {
-    int count = 0;
-    for (int i = 0; i < L.n; i++) {
-        if ((L.Data[i] >= 'a' && L.Data[i] <= 'z') || (L.Data[i] >= 'A' && L.Data[i] <= 'Z')) {
-            count++; // Tang bien dem neu ky tu la chu cai
-        }
-    }
-    return count; // Tra ve so luong ky tu viet
-}
-
-Ten ham: countDigits()
-int countDigits(Line L) {
-    int count = 0;
-    for (int i = 0; i < L.n; i++) {
-        if (L.Data[i] >= '0' && L.Data[i] <= '9') {
-            count++;
-        }
-    }
-    return count;
-}
-Ten ham: appendLine()
-void appendLine(Line *pDestination, Line Source) {
-    for (int i = 0; i < Source.n; i++) {
-        if (pDestination->n < MaxLength) {
-            appendChar(Source.Data[i], pDestination);
-        } else {
-            printf("LINE IS FULL\n");
-            break;
-        }
-    }
-}
-Goi thuc thi va cac phep toan cua sinh vien
-Bang cach su dung nhung phep toan da dinh nghia tren danh sach sinh vien. Hay viet chuong trinh nhap va hien thi danh sach sinh vien.
-
-
-
-#include <stdio.h>
-#include <string.h>
-
-#define MAX_SINH_VIEN 40
-
-// Cau truc SinhVien
-struct SinhVien {
-    char MSSV[10];
-    char HoTen[50];
-    float DiemLT, DiemTH1, DiemTH2;
-};
-
-// Cau truc DanhSach
-struct DanhSach {
-    struct SinhVien A[MAX_SINH_VIEN];
-    int n;
-};
-
-// Ham khoi tao danh sach rong
-struct DanhSach dsRong() {
-    struct DanhSach L;
-    L.n = 0; // Khoi tao so luong sinh vien
-    return L;
-}
-
-// Ham tim sinh vien theo ma so
-int tim(struct DanhSach L, char *mssv) {
-    for (int i = 0; i < L.n; i++) {
-        if (strcmp(L.A[i].MSSV, mssv) == 0) {
-            return i; // tra ve vi tri tim thay
-        }
-    }
-    return -1; // khong tim thay
-}
-
-// Ham them sinh vien vao cuoi danh sach
-void chenCuoi(struct DanhSach *L, struct SinhVien s) {
-    if (L->n < MAX_SINH_VIEN) {
-        L->A[L->n] = s;
-        L->n++;
-    }
-}
-
-// Ham nhap danh sach sinh vien
-struct DanhSach nhap() {
-    struct DanhSach L = dsRong(); // Khoi tao danh sach rong
-    int soSinhVien;
-    scanf("%d", &soSinhVien);
-
-    for (int i = 0; i < soSinhVien; i++) {
-        struct SinhVien sv;
-        scanf("%s", sv.MSSV);
-        
-        // Kiem tra ma so da ton tai
-        if (tim(L, sv.MSSV) != -1) {
-            i--; // Giam chi so de nhap lai sinh vien
-            continue; // Chuyen sang vong lap tiep theo
-        }
-        getchar(); // Xoa ky tu newline con lai trong buffer
-        fgets(sv.HoTen, sizeof(sv.HoTen), stdin);
-        sv.HoTen[strcspn(sv.HoTen, "\n")] = 0; // Xoa ky tu newline o cuoi chuoi
-        scanf("%f %f %f", &sv.DiemLT, &sv.DiemTH1, &sv.DiemTH2);
-
-        chenCuoi(&L, sv); // Them sinh vien vao danh sach
-    }
-
-    return L; // Tra ve danh sach sinh vien
-}
-
-// Ham hien thi danh sach sinh vien
-void hienThi(struct DanhSach L) {
-    for (int i = 0; i < L.n; i++) {
-        printf("%s - %s - %.2f - %.2f - %.2f\n", L.A[i].MSSV, L.A[i].HoTen, L.A[i].DiemLT, L.A[i].DiemTH1, L.A[i].DiemTH2);
-    }
-}
-
-// Ham main
-int main() {
-    struct DanhSach L;
-    L = nhap(); // Nhap danh sach sinh vien
-    hienThi(L); // Hien thi danh sach sinh vien
-    return 0;
-}
-
-
-Bang cach su dung nhung phep toan da dinh nghia tren danh sach sinh vien. Hay viet chuong trinh nhap va hien thi danh sach sinh vien. Sau do liet ke nhung sinh vien DAT.
-
-
-
-
-#include <stdio.h>
-#include <string.h>
-
-#define MAX_SINH_VIEN 40
-
-// Cau truc SinhVien
-struct SinhVien {
-    char MSSV[10];
-    char HoTen[50];
-    float DiemLT, DiemTH1, DiemTH2;
-};
-
-// Cau truc DanhSach
-struct DanhSach {
-    struct SinhVien A[MAX_SINH_VIEN];
-    int n;
-};
-
-// Ham khoi tao danh sach rong
-struct DanhSach dsRong() {
-    struct DanhSach L;
-    L.n = 0; // Khoi tao so luong sinh vien
-    return L;
-}
-
-// Ham tim sinh vien theo ma so
-int tim(struct DanhSach L, char *mssv) {
-    for (int i = 0; i < L.n; i++) {
-        if (strcmp(L.A[i].MSSV, mssv) == 0) {
-            return i; // tra ve vi tri tim thay
-        }
-    }
-    return -1; // khong tim thay
-}
-
-// Ham them sinh vien vao cuoi danh sach
-void chenCuoi(struct DanhSach *L, struct SinhVien s) {
-    if (L->n < MAX_SINH_VIEN) {
-        L->A[L->n] = s;
-        L->n++;
-    }
-}
-
-// Ham nhap danh sach sinh vien
-struct DanhSach nhap() {
-    struct DanhSach L = dsRong(); // Khoi tao danh sach rong
-    int soSinhVien;
-    scanf("%d", &soSinhVien);
-
-    for (int i = 0; i < soSinhVien; i++) {
-        struct SinhVien sv;
-        scanf("%s", sv.MSSV);
-        
-        // Kiem tra ma so da ton tai
-        if (tim(L, sv.MSSV) != -1) {
-            i--; // Giam chi so de nhap lai sinh vien
-            continue; // Chuyen sang vong lap tiep theo
-        }
-        getchar(); // Xoa ky tu newline con lai trong buffer
-        fgets(sv.HoTen, sizeof(sv.HoTen), stdin);
-        sv.HoTen[strcspn(sv.HoTen, "\n")] = 0; // Xoa ky tu newline o cuoi chuoi
-        scanf("%f %f %f", &sv.DiemLT, &sv.DiemTH1, &sv.DiemTH2);
-
-        chenCuoi(&L, sv); // Them sinh vien vao danh sach
-    }
-
-    return L; // Tra ve danh sach sinh vien
-}
-
-// Ham hien thi danh sach sinh vien
-void hienThi(struct DanhSach L) {
-    for (int i = 0; i < L.n; i++) {
-        printf("%s - %s - %.2f - %.2f - %.2f\n", L.A[i].MSSV, L.A[i].HoTen, L.A[i].DiemLT, L.A[i].DiemTH1, L.A[i].DiemTH2);
-    }
-}
-
-// Ham liet ke sinh vien dat
-void lietKeDat(struct DanhSach L) {
-    printf("Sinh vien DAT\n");
-    for (int i = 0; i < L.n; i++) {
-        float tongDiem = L.A[i].DiemLT + L.A[i].DiemTH1 + L.A[i].DiemTH2;
-        if (tongDiem >= 4.0) {
-            printf("%s - %s - %.2f - %.2f - %.2f\n", L.A[i].MSSV, L.A[i].HoTen, L.A[i].DiemLT, L.A[i].DiemTH1, L.A[i].DiemTH2);
-        }
-    }
-}
-
-// Ham main
-int main() {
-    struct DanhSach L;
-    L = nhap(); // Nhap danh sach sinh vien
-    hienThi(L); // Hien thi danh sach sinh vien
-    lietKeDat(L); // Liet ke sinh vien dat
-    return 0;
-}
-
-
-Bang cach su dung nhung phep toan da dinh nghia tren danh sach sinh vien. Hay viet chuong trinh nhap va hien thi danh sach sinh vien. Sau do liet ke nhung sinh vien KHONG DAT.
-
-
-
-
-#include <stdio.h>
-#include <string.h>
-
-#define MAX_SINH_VIEN 40
-
-// Cau truc SinhVien
-struct SinhVien {
-    char MSSV[10];
-    char HoTen[50];
-    float DiemLT, DiemTH1, DiemTH2;
-};
-
-// Cau truc DanhSach
-struct DanhSach {
-    struct SinhVien A[MAX_SINH_VIEN];
-    int n;
-};
-
-// Ham khoi tao danh sach rong
-struct DanhSach dsRong() {
-    struct DanhSach L;
-    L.n = 0; // Khoi tao so luong sinh vien
-    return L;
-}
-
-// Ham tim sinh vien theo ma so
-int tim(struct DanhSach L, char *mssv) {
-    for (int i = 0; i < L.n; i++) {
-        if (strcmp(L.A[i].MSSV, mssv) == 0) {
-            return i; // tra ve vi tri tim thay
-        }
-    }
-    return -1; // khong tim thay
-}
-
-// Ham them sinh vien vao cuoi danh sach
-void chenCuoi(struct DanhSach *L, struct SinhVien s) {
-    if (L->n < MAX_SINH_VIEN) {
-        L->A[L->n] = s;
-        L->n++;
-    }
-}
-
-// Ham nhap danh sach sinh vien
-struct DanhSach nhap() {
-    struct DanhSach L = dsRong(); // Khoi tao danh sach rong
-    int soSinhVien;
-    scanf("%d", &soSinhVien);
-
-    for (int i = 0; i < soSinhVien; i++) {
-        struct SinhVien sv;
-        scanf("%s", sv.MSSV);
-        
-        // Kiem tra ma so da ton tai
-        if (tim(L, sv.MSSV) != -1) {
-            i--; // Giam chi so de nhap lai sinh vien
-            continue; // Chuyen sang vong lap tiep theo
-        }
-
-        getchar(); // Xoa ky tu newline con lai trong buffer
-        fgets(sv.HoTen, sizeof(sv.HoTen), stdin);
-        sv.HoTen[strcspn(sv.HoTen, "\n")] = 0; // Xoa ky tu newline o cuoi chuoi
-        scanf("%f %f %f", &sv.DiemLT, &sv.DiemTH1, &sv.DiemTH2);
-
-        chenCuoi(&L, sv); // Them sinh vien vao danh sach
-    }
-
-    return L; // Tra ve danh sach sinh vien
-}
-
-// Ham hien thi danh sach sinh vien
-void hienThi(struct DanhSach L) {
-    for (int i = 0; i < L.n; i++) {
-        printf("%s - %s - %.2f - %.2f - %.2f\n", L.A[i].MSSV, L.A[i].HoTen, L.A[i].DiemLT, L.A[i].DiemTH1, L.A[i].DiemTH2);
-    }
-}
-
-// Ham liet ke sinh vien khong dat
-void lietKeKhongDat(struct DanhSach L) {
-    printf("Sinh vien KHONG DAT\n");
-    for (int i = 0; i < L.n; i++) {
-        float tongDiem = L.A[i].DiemLT + L.A[i].DiemTH1 + L.A[i].DiemTH2;
-        if (tongDiem < 4.0) {
-            printf("%s - %s - %.2f - %.2f - %.2f\n", L.A[i].MSSV, L.A[i].HoTen, L.A[i].DiemLT, L.A[i].DiemTH1, L.A[i].DiemTH2);
-        }
-    }
-}
-
-// Ham main
-int main() {
-    struct DanhSach L;
-    L = nhap(); // Nhap danh sach sinh vien
-    hienThi(L); // Hien thi danh sach sinh vien
-    lietKeKhongDat(L); // Liet ke sinh vien khong dat
-    return 0;
-}
-
-
-Bang cach su dung nhung phep toan da dinh nghia tren danh sach sinh vien. Hay viet chuong trinh nhap va hien thi danh sach sinh vien. Sau do nhap mot ma so sinh vien tu ban phim, neu ma so ton tai thi xoa sinh vien co ma so do.
-
-
-
-
-#include <stdio.h>
-#include <string.h>
-
-#define MAX_SINH_VIEN 40
-
-// Cau truc SinhVien
-struct SinhVien {
-    char MSSV[10];
-    char HoTen[50];
-    float DiemLT, DiemTH1, DiemTH2;
-};
-
-// Cau truc DanhSach
-struct DanhSach {
-    struct SinhVien A[MAX_SINH_VIEN];
-    int n;
-};
-
-// Ham khoi tao danh sach rong
-struct DanhSach dsRong() {
-    struct DanhSach L;
-    L.n = 0; // Khoi tao so luong sinh vien
-    return L;
-}
-
-// Ham tim sinh vien theo ma so
-int tim(struct DanhSach L, char *mssv) {
-    for (int i = 0; i < L.n; i++) {
-        if (strcmp(L.A[i].MSSV, mssv) == 0) {
-            return i; // tra ve vi tri tim thay
-        }
-    }
-    return -1; // khong tim thay
-}
-
-// Ham them sinh vien vao cuoi danh sach
-void chenCuoi(struct DanhSach *L, struct SinhVien s) {
-    if (L->n < MAX_SINH_VIEN) {
-        L->A[L->n] = s;
-        L->n++;
-    }
-}
-
-// Ham xoa sinh vien theo ma so
-void xoa(struct DanhSach *L, char *mssv) {
-    int viTri = tim(*L, mssv);
-    if (viTri != -1) {
-        for (int i = viTri; i < L->n - 1; i++) {
-            L->A[i] = L->A[i + 1]; // Dich chuyen phan tu
-        }
-        L->n--; // Giam so luong sinh vien
-    } else {
-        printf("Khong tim thay sinh vien %s\n", mssv);
-    }
-}
-
-// Ham nhap danh sach sinh vien
-struct DanhSach nhap() {
-    struct DanhSach L = dsRong(); // Khoi tao danh sach rong
-    int soSinhVien;
-
-    scanf("%d", &soSinhVien);
-
-    for (int i = 0; i < soSinhVien; i++) {
-        struct SinhVien sv;
-        scanf("%s", sv.MSSV);
-        
-        // Kiem tra ma so da ton tai
-        if (tim(L, sv.MSSV) != -1) {
-            i--; // Giam chi so de nhap lai sinh vien
-            continue; // Chuyen sang vong lap tiep theo
-        }
-
-        getchar(); // Xoa ky tu newline con lai trong buffer
-        fgets(sv.HoTen, sizeof(sv.HoTen), stdin);
-        sv.HoTen[strcspn(sv.HoTen, "\n")] = 0; // Xoa ky tu newline o cuoi chuoi
-
-        scanf("%f %f %f", &sv.DiemLT, &sv.DiemTH1, &sv.DiemTH2);
-
-        chenCuoi(&L, sv); // Them sinh vien vao danh sach
-    }
-
-    return L; // Tra ve danh sach sinh vien
-}
-
-// Ham hien thi danh sach sinh vien
-void hienThi(struct DanhSach L) {
-    for (int i = 0; i < L.n; i++) {
-        printf("%s - %s - %.2f - %.2f - %.2f\n", L.A[i].MSSV, L.A[i].HoTen, L.A[i].DiemLT, L.A[i].DiemTH1, L.A[i].DiemTH2);
-    }
-}
-
-// Ham main
-int main() {
-    struct DanhSach L;
-    L = nhap(); // Nhap danh sach sinh vien
-    hienThi(L); // Hien thi danh sach sinh vien
-
-    char mssv[10];
-    scanf("%s", mssv);
-
-    // Tim kiem va xoa sinh vien
-    int viTri = tim(L, mssv);
-    if (viTri != -1) {
-        printf("Tim thay sinh vien %s. Thong tin sinh vien:\n", mssv);
-        printf("%s - %s - %.2f - %.2f - %.2f\n", L.A[viTri].MSSV, L.A[viTri].HoTen, L.A[viTri].DiemLT, L.A[viTri].DiemTH1, L.A[viTri].DiemTH2);
-        xoa(&L, mssv); // Xoa sinh vien
-    } else {
-        printf("Khong tim thay sinh vien %s\n", mssv);
-    }
-
-    return 0;
-}
-
-
-Danh sach lien ket
-Hay viet khai bao cho kieu du lieu List voi cac thanh phan duoc mo ta nhu hinh tren de la mot danh sach lien ket don cac so nguyen
-typedef struct Node {
-    int Element;
-    struct Node* Next;
-} Node;
-typedef Node* Position;
-typedef Node* List;
-Ten ham: makenullList()
-void makenullList(List *pL) {
-    *pL = (List)malloc(sizeof(struct Node)); // Cap phat bo nho cho nut dau tien
-    (*pL)->Next = NULL; // Truong Next chi toi NULL
-}
-Ten ham (function name): member()
-int member(int x, List L) {
-    for (Position p = L->Next; p; p = p->Next)
-        if (p->Element == x) return 1;
-    return 0;
-}
-Ten ham (function name): sort()
-void sort(List* pL) {
-    for (Position p = (*pL)->Next; p; p = p->Next) {
-        for (Position q = p->Next; q; q = q->Next) {
-            if (p->Element > q->Element) {
-                int temp = p->Element;
-                p->Element = q->Element;
-                q->Element = temp;
-            }
-        }
-    }
-}
-Ten ham (function name): unionSet()
-List unionSet(List L1, List L2) {
-    List result;
-    makenullList(&result);
-    for (Position p = L1->Next; p; p = p->Next) append(p->Element, &result);
-    for (Position p = L2->Next; p; p = p->Next)
-        if (!member(p->Element, result)) append(p->Element, &result);
-    return result;
-}
-Ten ham: deleteList()
-void deleteList(Position p, List *pL) {
-    if (p != NULL && p->Next != NULL) {
-        Position temp = p->Next; // Luu vi tri cua nut can xoa
-        p->Next = p->Next->Next; // Cap nhat lien ket de bo qua nut can xoa
-        free(temp); // Giai phong bo nho
-    }
-}
-Ten ham: removeAll()
-void removeAll(int x, List *pL) {
-    for (Position i = *pL; i->Next; )
-        if (i == locate(x, *pL))
-            deleteList(i, pL);
-        else
-            i = i->Next;
-}
-
-Xoa phan tu dau tien
-void deleteHead(List *pL) {
-    if (pL->Head != NULL) { // Kiem tra xem danh sach co nut nao khong
-        Position temp = pL->Head; // Luu vi tri cua nut Head
-        pL->Head = pL->Head->Next; // Cap nhat Head de tro den nut tiep theo
-        free(temp); // Giai phong bo nho cho nut A
-    }
-}
-
-Ten ham (function name): intersection()
-List intersection(List L1, List L2) {
-    List result;
-    makenullList(&result);
-    for (Position p = L1->Next; p != NULL; p = p->Next) {
-        if (member(p->Element, L2)) append(p->Element, &result);
-    }
-    return result;
-}
-Ten ham (function name): copyEvenNumbers()
-void copyEvenNumbers(List L1, List *pL2) {
-    makenullList(pL2);
-    for (Position p = L1->Next; p != NULL; p = p->Next) {
-        if (p->Element % 2 == 0) append(p->Element, pL2);
-    }
-}
-Ten ham: append()
-void append(int x, List *pL) {
-    Position newNode = (Position)malloc(sizeof(struct Node));
-    newNode->Element = x;
-    newNode->Next = NULL;
-    Position p = *pL;
-    while (p->Next) p = p->Next;
-    p->Next = newNode;
-}
-Ten ham: insertList()
-void insertList(int x, Position p, List *pL) {
-    Position newNode = (Position)malloc(sizeof(struct Node));
-    newNode->Element = x;
-    newNode->Next = p->Next;
-    p->Next = newNode;
-}
-Ten ham: locate()
-Position locate(ElementType x, List L) {
-    Position p = L;
-    while (p->Next != NULL && p->Next->Element != x) {
-        p = p->Next;
-    }
-    return p;
-}
-Ten ham (function name): normalize()
-void normalize(List *pL) {
-    for (Position p = (*pL)->Next; p; p = p->Next) {
-        Position prev = p;
-        for (Position q = p->Next; q; q = prev->Next) {
-            if (p->Element == q->Element) {
-                deleteList(prev, pL);
-            } else {
-                prev = q;
-            }
-        }
-    }
-}
-Ten ham (function name): printOddNumbers()
-void printOddNumbers(List L) {
-    for (Position p = L->Next; p; p = p->Next)
-        if (p->Element % 2 != 0)
-            printf("%d ", p->Element);
-}
-Ten ham (function name): getAvg()
-float getAvg(List L) {
-    if (L->Next == NULL) return -10000.0f;
-    float sum = 0.0f;
-    int count = 0;
-    for (Position p = L->Next; p != NULL; p = p->Next) {
-        sum += p->Element;
-        count++;
-    }
-    return sum / count;
-}
-Ten ham: readList()
-
-void readList(List *pL) {
-    int n, x;
-    makenullList(pL);
-    scanf("%d", &n);
-    for (Position p = *pL; n--; p = p->Next) {
-        scanf("%d", &x);
-        p->Next = (Position)malloc(sizeof(struct Node));
-        p->Next->Element = x;
-        p->Next->Next = NULL;
-    }
-}
-Ten ham (function name): readSet()
-List readSet() {
-    List L;
-    makenullList(&L);
-    int n, x;
-    scanf("%d", &n);
-    while (n--) {
-        scanf("%d", &x);
-        if (!member(x, L)) addFirst(x, &L);
-    }
-    return L;
-}
-Ten ham (function name): difference()
-List difference(List L1, List L2) {
-    List result;
-    makenullList(&result);
-    for (Position p = L1->Next; p; p = p->Next)
-        if (!member(p->Element, L2))
-            append(p->Element, &result);
-    return result;
-}
-Ten ham (function name): erase()
-void erase(int x, List *pL) {
-    Position p = locate(x, *pL);
-    if (p->Next) {
-        Position temp = p->Next;
-        p->Next = temp->Next;
-        free(temp);
-    } else {
-        printf("Not found %d\n", x);
-    }
-}
-Ten ham: addFirst()
-void addFirst(int x, List* pL) {
-    Position newNode = (Position)malloc(sizeof(struct Node));
-    newNode->Element = x;
-    newNode->Next = (*pL)->Next;
-    (*pL)->Next = newNode;
-}
-
-
-Bang cach su dung nhung phep toan chuan tren danh sach, hay viet chuong trinh cho phep liet ke cac so chan va tinh trung binh cong cac phan tu la so chan trong danh sach
-
-#include <stdio.h>
-#include <stdlib.h>
-typedef struct Node {
-    int Element;
-    struct Node* Next;
-} Node;
-typedef Node* List;
-typedef Node* Position;
-// Khoi tao danh sach rong
-void makenullList(List *pL) {
-    *pL = (List)malloc(sizeof(Node));
-    (*pL)->Next = NULL;
-}
-// Them phan tu vao cuoi danh sach
-void append(int x, List *pL) {
-    Position newNode = (Position)malloc(sizeof(Node));
-    newNode->Element = x;
-    newNode->Next = NULL;
-    Position p = *pL;
-    while (p->Next != NULL) {
-        p = p->Next;
-    }
-    p->Next = newNode;
-}
-// Hien thi danh sach
-void displayList(List L) {
-    Position p = L->Next;
-    while (p != NULL) {
-        printf("%d ", p->Element);
-        p = p->Next;
-    }
-    printf("\n");
-}
-// Tinh trung binh cong cac so chan
-float getAvgEven(List L) {
-    float sum = 0;
-    int count = 0;
-    Position p = L->Next;
-    while (p != NULL) {
-        if (p->Element % 2 == 0) {
-            sum += p->Element;
-            count++;
-        }
-        p = p->Next;
-    }
-    return (count == 0) ? -10000.0f : sum / count;
-}
-// Chep cac so chan sang danh sach ket qua
-void copyEvenNumbers(List L1, List *pL2) {
-    makenullList(pL2);
-    Position p = L1->Next;
-    while (p != NULL) {
-        if (p->Element % 2 == 0) {
-            append(p->Element, pL2);
-        }
-        p = p->Next;
-    }
-}
-int main() {
-    List L, evenList;
-    int n, x;
-    scanf("%d", &n);
-    makenullList(&L);
-    for (int i = 0; i < n; i++) {
-        scanf("%d", &x);
-        append(x, &L);
-    }
-    displayList(L);
-    copyEvenNumbers(L, &evenList);
-    displayList(evenList);
-    float avg = getAvgEven(L);
-    printf("%.3f\n", avg);
-    return 0;
-}
-
-
-
-Bang cach su dung nhung phep toan chuan tren danh sach, hay viet chuong trinh cho phep sap xep danh sach tang dan
-
-#include <stdio.h>
-#include <stdlib.h>
-typedef struct Node {
-    int Element;
-    struct Node* Next;
-} Node;
-typedef Node* List;
-typedef Node* Position;
-// Khoi tao danh sach rong
-void makenullList(List *pL) {
-    *pL = (List)malloc(sizeof(Node));
-    (*pL)->Next = NULL;
-}
-// Them phan tu vao cuoi danh sach
-void append(int x, List *pL) {
-    Position newNode = (Position)malloc(sizeof(Node));
-    newNode->Element = x;
-    newNode->Next = NULL;
-    Position p = *pL;
-    while (p->Next != NULL) {
-        p = p->Next;
-    }
-    p->Next = newNode;
-}
-// Hien thi danh sach
-void displayList(List L) {
-    Position p = L->Next;
-    while (p != NULL) {
-        printf("%d ", p->Element);
-        p = p->Next;
-    }
-    printf("\n");
-}
-// Sap xep danh sach tang dan
-void sortList(List L) {
-    if (L->Next == NULL) return; // Danh sach rong
-    Position p, q;
-    int temp;
-    for (p = L->Next; p->Next != NULL; p = p->Next) {
-        for (q = p->Next; q != NULL; q = q->Next) {
-            if (p->Element > q->Element) {
-                // Doi cho gia tri cua p va q
-                temp = p->Element;
-                p->Element = q->Element;
-                q->Element = temp;
-            }
-        }
-    }
-}
-int main() {
-    List L;
-    int n, x;
-    scanf("%d", &n);
-    makenullList(&L);
-    for (int i = 0; i < n; i++) {
-        scanf("%d", &x);
-        append(x, &L);
-    }
-    displayList(L);
-    sortList(L);
-    displayList(L);
-    return 0;
-}
-
-Bang cach su dung nhung phep toan chuan tren danh sach, hay viet chuong trinh cho phep nhap va hien thi mot danh sach so nguyen tu ban phim
-
-#include <stdio.h>
-#include <stdlib.h>
-typedef struct Node {
-    int Element;
-    struct Node* Next;
-} Node;
-typedef Node* List;
-typedef Node* Position;
-
-// Ham khoi tao danh sach rong
-void makenullList(List *pL) {
-    *pL = (List)malloc(sizeof(Node));
-    (*pL)->Next = NULL;
-}
-// Ham them phan tu vao cuoi danh sach
-void append(int x, List *pL) {
-    Position newNode = (Position)malloc(sizeof(Node));
-    newNode->Element = x;
-    newNode->Next = NULL;
-    Position p = *pL;
-    while (p->Next != NULL) {
-        p = p->Next;
-    }
-    p->Next = newNode;
-}
-// Ham hien thi danh sach
-void displayList(List L) {
-    Position p = L->Next; // Bo qua phan tu dau tien
-    while (p != NULL) {
-        printf("%d ", p->Element);
-        p = p->Next;
-    }
-    printf("\n");
-}
-int main() {
-    List L;
-    int n, x;
-    scanf("%d", &n);
-    makenullList(&L);
-    for (int i = 0; i < n; i++) {
-        scanf("%d", &x);
-        append(x, &L);
-    }
-    displayList(L);
-    return 0;
-}
-
-Bang cach su dung nhung phep toan tren tap hop, hay viet chuong trinh cho phep tim tap hop giao cua 2 danh sach bieu dien tap hop
-
-#include <stdio.h>
-#include <stdlib.h>
-typedef struct Node{
-	int Element;
-	struct Node* Next;
-}Node;
-typedef Node* pos;
-typedef Node* List;
-void makenullList(List *pL){
-	*pL = (List)malloc(sizeof(struct Node));
-	(*pL)->Next = NULL;
-}
-void addFirst(int x, List *pL){
-	pos n = (pos)malloc(sizeof(struct Node));
-	n->Element = x;
-	n->Next = (*pL)->Next;
-	(*pL)->Next = n;
-}
-int member(int x, List L){
-	pos p;
-	for(p = L->Next; p; p = p->Next)
-		if(p->Element == x) return 1;
-	return 0;
-}
-
-List readSet(){
-	List L;
-	makenullList(&L);
-	int n, x;
-	scanf("%d",&n);
-	while(n--){
-		scanf("%d",&x);
-		if(!member(x,L)) addFirst(x,&L);
-	}
-	return L;
-}
-void printList(List L){
-	pos p;
-	for(p = L->Next; p; p = p->Next)
-		printf("%d ",p->Element); 
-	printf("\n");
-}
-void append(int x, List *pL){
-	pos n = (pos)malloc(sizeof(struct Node));
-	n->Element = x;
-	n->Next = NULL;
-	pos p = *pL;
-	while(p->Next)u
-		p = p->Next;
-	p->Next = n;
-}
-List intersection(List L1, List L2){
-	List L;
-	makenullList(&L);
-	pos p;
-	for(p = L1->Next; p; p = p->Next){
-		if(member(p->Element,L2)) append(p->Element,&L);
-	}
-	return L;
-}
-int main(){
-	List L1 = readSet();
-	List L2 = readSet();
-	printList(L1);
-	printList(L2);
-	List L = intersection(L1,L2);
-	printList(L);
-	return 0;
-}
-
-Bang cach su dung nhung phep toan chuan tren danh sach, hay viet chuong trinh cho phep xoa phan tu x xuat hien dau tien trong danh sach
-
-#include <stdio.h>
-#include <stdlib.h>
-typedef struct Node{
-	int Element;
-	struct Node* Next;
-}Node;
-typedef Node* Pos;
-typedef Node* List;
-void makenullList(List *pL){
-	*pL = (Pos)malloc(sizeof(struct Node));
-	(*pL)->Next = 0;
-}
-void append(int x, List *pL){
-	Pos n = (Pos)malloc(sizeof(struct Node));
-	n->Element = x;
-	n->Next = NULL;
-	Pos p = *pL;
-	while(p->Next)
-		p = p->Next;
-	p->Next = n;
-}
-List read(){
-	List L;
-	makenullList(&L);
-	int n, x;
-	scanf("%d",&n);
-	while(n--){
-		scanf("%d",&x);
-		append(x,&L);
-	}
-	return L;
-}
-void printList(List L){
-	Pos p;
-	for(p = L->Next; p; p = p->Next)
-		printf("%d ",p->Element);
-	printf("\n");
-}
-Pos locate(int x, List L){
-	Pos p = L;
-	while(p->Next!=NULL && p->Next->Element != x)
-		p = p->Next;
-	return p;
-}
-void deleteList(Pos p, List *pL){
-	if(p!=NULL && p->Next!=NULL){
-		Pos tmp = p->Next;
-		p->Next = p->Next->Next;
-		free(tmp);
-	}
-}
-void removeAll(int x, List *pL){
-	Pos p;
-	for(p = *pL; p->Next;){
-		if(p==locate(x,*pL)) deleteList(p,pL);
-		else p = p->Next;
-	}
-}
-int main(){
-	List L = read();
-	printList(L);
-	int x;
-	scanf("%d",&x);
-	removeAll(x,&L);
-	printList(L);
-	return 0;
-}
-
-
-Bang cach su dung nhung phep toan chuan tren danh sach, hay viet chuong trinh cho phep tinh trung binh cong cac phan tu trong danh sach
-
-#include <stdio.h>
-#include <stdlib.h>
-
-typedef struct Node {
-    int Element;
-    struct Node* Next;
-} Node;
-
-typedef Node* List;
-
-// Ham khoi tao danh sach rong
-void makenullList(List *pL) {
-    *pL = (List)malloc(sizeof(Node));
-    (*pL)->Next = NULL;
-}
-
-// Ham them phan tu vao danh sach
-void append(int x, List *pL) {
-    Node* newNode = (Node*)malloc(sizeof(Node));
-    newNode->Element = x;
-    newNode->Next = NULL;
-
-    Node* p = *pL;
-    while (p->Next != NULL) {
-        p = p->Next;
-    }
-    p->Next = newNode; // Them vao cuoi danh sach
-}
-
-// Ham hien thi danh sach
-void displayList(List L) {
-    Node* p = L->Next; // Bo qua phan tu dau tien
-    while (p != NULL) {
-        printf("%d ", p->Element);
-        p = p->Next;
-    }
-    printf("\n");
-}
-
-// Ham tinh trung binh cong cac phan tu trong danh sach
-double calculateAverage(List L) {
-    if (L->Next == NULL) return 0.0; // Neu danh sach rong
-
-    Node* p = L->Next;
-    int sum = 0, count = 0;
-
-    while (p != NULL) {
-        sum += p->Element;
-        count++;
-        p = p->Next;
-    }
-
-    return (double)sum / count; // Tinh trung binh cong
-}
-
-int main() {
-    List L;
-    int n;
-
-    // Nhap danh sach
-    scanf("%d", &n);
-    makenullList(&L);
-    
-    for (int i = 0; i < n; i++) {
-        int element;
-        scanf("%d", &element);
-        append(element, &L);
-    }
-
-    // Hien thi danh sach
-    displayList(L);
-
-    // Tinh va hien thi trung binh cong
-    double average = calculateAverage(L);
-    printf("%.3f\n", average);
-
-    // Giai phong bo nho
-    Node* current = L;
-    Node* nextNode;
-    while (current != NULL) {
-        nextNode = current->Next;
-        free(current);
-        current = nextNode;
-    }
-
-    return 0;
-}
-
-Bang cach su dung nhung phep toan chuan tren danh sach, hay viet chuong trinh cho phep liet ke cac so le, so chan trong danh sach
-
-#include <stdio.h>
-#include <stdlib.h>
-typedef struct Node{
-	int Element;
-	struct Node* Next;
-}Node;
-typedef Node* List;
-typedef Node* pos;
-void makenullList(List *pL){
-	*pL = (List)malloc(sizeof(struct Node));
-	(*pL)->Next = NULL;
-}
-void append(int x, List *pL){
-	pos n = (pos)malloc(sizeof(struct Node));
-	n->Element = x;
-	n->Next = NULL;
-	pos p = *pL;
-	while(p->Next)
-		p = p->Next; 
-	p->Next = n;
-}
-List readSet(){
-	List L;
-	makenullList(&L);
-	int n, x;
-	scanf("%d",&n);
-	while(n--){
-		scanf("%d",&x);
-		append(x,&L);
-	}
-	return L; 
-}
-void print(List L){
-	pos p;
-	for(p = L->Next; p; p = p->Next)
-		printf("%d ",p->Element);
-	printf("\n");
-	for(p = L->Next; p; p = p->Next)
-		if(p->Element % 2 != 0) printf("%d ",p->Element);
-	printf("\n");
-	for(p = L->Next; p; p = p->Next)
-		if(p->Element % 2 == 0) printf("%d ",p->Element);
-}
-
-int main() {
-    List L = readSet(); 
-    print(L);
-    return 0;
-}
-
-Bang cach su dung nhung phep toan tren tap hop, hay viet chuong trinh cho phep tim tap hop hop cua 2 danh sach bieu dien tap hop
-
-#include <stdio.h>
-#include <stdlib.h>
-typedef struct Node{
-	int Element;
-	struct Node* Next;
-}Node;
-typedef Node* Pos;
-typedef Node* List;
-void makenullList(List *pL){
-	*pL = (Pos)malloc(sizeof(struct Node));
-	(*pL)->Next = 0;
-}
-void append(int x, List *pL){
-	Pos n = (Pos)malloc(sizeof(struct Node));
-	n->Element = x;
-	n->Next = NULL;
-	Pos p = *pL;
-	while(p->Next)
-		p = p->Next;
-	p->Next = n;
-}
-void addFirst(int x, List *pL){
-	Pos n = (Pos)malloc(sizeof(struct Node));
-	n->Element = x;
-	n->Next = (*pL)->Next;
-	(*pL)->Next = n;
-}
-int member(int x, List L){
-	Pos p;
-	for(p = L->Next; p; p = p->Next)
-		if(p->Element == x) return 1;
-	return 0; 
-}
-List read(){
-	List L;
-	makenullList(&L);
-	int n, x;
-	scanf("%d",&n);
-	while(n--){
-		scanf("%d",&x);
-		if(!member(x,L))
-			addFirst(x,&L);
-	}
-	return L;
-}
-void printList(List L){
-	Pos p;
-	for(p = L->Next; p; p = p->Next)
-		printf("%d ",p->Element);
-	printf("\n");
-}
-List unionSet(List L1, List L2){
-	List L;
-	makenullList(&L);
-	Pos p, q;
-	for(p = L1->Next; p; p = p->Next)
-		append(p->Element,&L);
-	for(q = L2->Next; q; q = q->Next)
-		if(!member(q->Element,L)) append(q->Element,&L);
-	return L;
-}
-int main(){
-	List L1 = read();
-	List L2 = read();
-	printList(L1);
-	printList(L2);
-	List L = unionSet(L1, L2);
-	printList(L);
-	return 0;
-}
-
-
-
-
-
-
-
-
-
-Ngan Xep
-Ten ham: giatriDinh()
-int giatriDinh(NganXep S){
-    return S.DuLieu[S.Dinh];
-}
-Khai bao NganXep
-#define SoPhanTu 100
-typedef struct{
-    int DuLieu[SoPhanTu];
-    int Dinh;
-}NganXep;
-Ten ham: ktDay()
-int ktDay(NganXep S){
-    return S.Dinh ==0;
-}
-Ten ham: ktRong()
-int ktRong(NganXep S){
- return S.Dinh == SoPhanTu;
-}
-Ten ham: hienthi()
-void hienthi(NganXep *pS){
-    while(!ktRong(*pS)){
-        printf("%d ",giatriDinh(*pS));
-        xoa(pS);
-    }
-    printf("\n");
-}
-Ten ham: them()
-void them(int X, NganXep *pS){
-    if(!ktDay(*pS)){
-        pS->Dinh--;
-        pS->DuLieu[pS->Dinh] = X;
-    }
-}
-Ten ham: xoa()
-void xoa(NganXep *pS){
-    if (!ktRong(*pS))
-    pS->Dinh++;
-}
-Ten ham: khoitao()
-void khoitao(NganXep *pS){
-    pS->Dinh = SoPhanTu;
-}
-UNG DUNG NGAN XEP
-Ten ham: doiNhiPhan()
-
-void doiNhiPhan(int n, NganXep *pS) {
-    khoitao(pS); // Khoi tao ngan xep
-    // Chuyen doi so nguyen duong n ve dang nhi phan
-    while (n > 0) {
-        int du = n % 2; // Lay phan du khi chia n cho 2
-        them(du, pS); // Them phan du vao ngan xep
-        n = n / 2; // Giam n di mot nua
-    }
-}
-void hienthi(NganXep *pS) {
-    while (!ktRong(*pS)) {
-        int giaTri = giatriDinh(*pS);
-        printf("%d ", giaTri);
-        xoa(pS);
-    }
-}
-
-
-Ham inThaplucphan() 
-
-void inThaplucphan(int n) {
-    Stack s;
-    makenullStack(&s); // Khoi tao ngan xep
-    // Mang chua cac ky tu thap luc phan
-    char hexDigits[] = "0123456789ABCDEF";
-    // Chuyen doi so nguyen n ve dang thap luc phan
-    while (n > 0) {
-        int du = n % 16; // Lay phan du khi chia n cho 16
-        push(hexDigits[du], &s); // Them ky tu tuong ung vao ngan xep
-        n = n / 16; // Giam n di mot phan muoi sau
-    }
-    // In ket qua tu ngan xep
-    while (!emptyStack(s)) {
-        char c = top(s); // Lay gia tri tai dinh ngan xep
-        pop(&s); // Xoa phan tu tai dinh ngan xep
-        printf("%c", c); // In ky tu
-    }
-    printf("\n"); // Xuong dong sau khi in xong
-}
-
-Ham ktChuoi() 
-
-#define MAX_LENGTH 100 // Do dai toi da cua chuoi
-// Gia su kieu du lieu Stack va cac ham lien quan da duoc dinh nghia o day
-int ktChuoi() {
-    Stack S;
-    makenullStack(&S); // Khoi tao ngan xep
-    char str[MAX_LENGTH];
-    fgets(str, MAX_LENGTH, stdin); // Nhap chuoi
-    // Loai bo ky tu newline neu co
-    str[strcspn(str, "\n")] = '\0';
-    // Duyet qua tung ky tu trong chuoi
-    for (int i = 0; i < strlen(str); i++) {
-        char ch = str[i];
-
-        if (ch == '(') {
-            push(ch, &S); // Neu la '(', dua vao ngan xep
-        } else if (ch == ')') {
-            if (emptyStack(S)) {
-                return 0; // Ngan xep rong, chuoi khong dung
-            }
-            pop(&S); // Xoa phan tu tren dinh ngan xep
-        }
-    }
-    // Kiem tra neu ngan xep rong
-    return emptyStack(S) ? 1 : 0; // 1 neu dung, 0 neu khong dung
-}
-
-Ham tinhGiatri()
-
-#define MAX_LENGTH 100 // Do dai toi da cua chuoi
-
-// Gia su kieu du lieu Stack va cac ham lien quan da duoc dinh nghia o day
-
-double tinhGiatri(char *expression) {
-    Stack S;
-    makenullStack(&S); // Khoi tao ngan xep
-
-    for (int i = 0; i < strlen(expression); i++) {
-        char ch = expression[i];
-
-        if (isdigit(ch)) {
-            // Neu la ky tu so, chuyen thanh so thuc va dua vao ngan xep
-            double num = ch - '0';
-            push(num, &S);
-        } else if (ch == ' ') {
-            // Bo qua ky tu khoang trang
-            continue;
-        } else {
-            // Neu la ky tu phep toan, lay hai phan tu tren dinh ngan xep ra
-            double val2 = top(S); pop(&S);
-            double val1 = top(S); pop(&S);
-            double result;
-
-            // Thuc hien phep toan tuong ung
-            switch (ch) {
-                case '+': result = val1 + val2; break;
-                case '-': result = val1 - val2; break;
-                case '*': result = val1 * val2; break;
-                case '/': result = val1 / val2; break;
-                default: printf("Phep toan khong hop le\n"); return 0;
-            }
-
-            // Dua ket qua phep toan vao ngan xep
-            push(result, &S);
-        }
-    }
-
-    // Gia tri cuoi cung tren dinh ngan xep la ket qua cua bieu thuc hau to
-    return top(S);
-}
-
-
-
-Ham chuyenHauto() 
-
-#define MAX_LENGTH 100 // Do dai toi da cua chuoi
-
-// Gia su kieu du lieu Stack va cac ham lien quan da duoc dinh nghia o day
-
-void chuyenHauto(char *trungto, char *hauto) {
-    Stack S;
-    makenullStack(&S); // Khoi tao ngan xep
-    int j = 0; // Chi so cho chuoi hauto
-
-    for (int i = 0; i < strlen(trungto); i++) {
-        char c = trungto[i];
-        if (isalnum(c)) {
-            // Neu la toan hang (so hoac chu cai), dua vao chuoi hauto
-            hauto[j++] = c;
-        } else if (c == '(') {
-            // Neu la dau '(', dua vao ngan xep
-            push(c, &S);
-        } else if (c == ')') {
-            // Neu la dau ')', lay cac toan tu ra khoi ngan xep cho den khi gap '('
-            while (!emptyStack(S) && top(S) != '(') {
-                hauto[j++] = top(S);
-                pop(&S);
-            }
-            pop(&S); // Xoa dau '(' ra khoi ngan xep
-        } else if (c == '+' || c == '-' || c == '*' || c == '/') {
-            // Neu la toan tu, xu ly theo muc uu tien
-            while (!emptyStack(S) && top(S) != '(' && mucUutien(c) <= mucUutien(top(S))) {
-                hauto[j++] = top(S);
-                pop(&S);
-            }
-            push(c, &S);
-        }
-    }
-
-    // Dua tat ca cac toan tu con lai trong ngan xep vao chuoi hauto
-    while (!emptyStack(S)) {
-        hauto[j++] = top(S);
-        pop(&S);
-    }
-
-    hauto[j] = '\0'; // Ket thuc chuoi hauto
-}
-
-// int main() {
-//     char trungto[MAX_LENGTH] = "(3+4)/2";
-//     char hauto[MAX_LENGTH];
-
-//     chuyenHauto(trungto, hauto);
-//     printf("Bieu thuc hau to: %s\n", hauto);
-
-//     return 0;
+    keytype key;
+    othertype otherfields;
+} recordtype;
+
+void Swap(recordtype *x, recordtype *y) {
+    recordtype temp = *x;
+    *x = *y;
+    *y = temp;
+}
+
+//void SelectionSort(recordtype a[], int n) {
+//    int i, j, lowindex;
+//    keytype lowkey;
+//    for (i = 0; i <= n -2; i++) {
+//    	lowkey = a[i].key;
+//        lowindex = i;
+//        for (j = i + 1; j <= n - 1; j++) {
+//            if (a[j].key < lowkey) {
+//                lowkey = a[j].key;
+//				lowindex = j;
+//            }
+//        }
+//        Swap(&a[i], &a[lowindex]);
+//    }
 //}
 
-Hang Doi
-Tinh so don vi thoi gian can thiet cua Minh de hoan thanh n cong viec duoc giao.
+//void InsertSort(recordtype a[],int n){
+//	int i,j;
+//	for(i=1;i<=n-1;i++){
+//		j=i;
+//		while(j>0 & a[j].key < a[j-1].key){
+//			Swap(&a[j],&a[j-1]);
+//			j--;
+//		}
+//		
+//	}
+//}
 
-#include <stdio.h>
-#include <stdlib.h>
-#define MAX_N 100
-int main() {
-    int N;
-    scanf("%d", &N);
-    int tasks[N];       // Danh sach cac cong viec duoc giao
-    int optimal[N];     // Danh sach cac cong viec toi uu
-    int time = 0;       // Thoi gian can thiet
-    // Nhap danh sach cong viec duoc giao
-    for (int i = 0; i < N; i++) {
-        scanf("%d", &tasks[i]);
-    }
-    // Nhap danh sach cong viec toi uu
-    for (int i = 0; i < N; i++) {
-        scanf("%d", &optimal[i]);
-    }
-    int optimalIndex = 0; // Chi so cho danh sach toi uu
-    // Su dung vong lap de xu ly cac cong viec
-    for (int i = 0; i < N;) {
-        // Neu cong viec hien tai khop voi cong viec toi uu
-        if (tasks[i] == optimal[optimalIndex]) {
-            // Thuc hien cong viec
-            optimalIndex++;
-            time++; // Tang thoi gian
-            i++;    // Chuyen sang cong viec tiep theo trong danh sach giao
-        } else {
-            // Neu khong khop, chuyen cong viec vao cuoi
-            int temp = tasks[i];
-            for (int j = i; j < N - 1; j++) {
-                tasks[j] = tasks[j + 1]; // Di chuyen cong viec
-            }
-            tasks[N - 1] = temp; // Dua cong viec vao cuoi danh sach
-            time++; // Tang thoi gian
-        }
-        // Neu da thuc hien xong tat ca cong viec toi uu
-        if (optimalIndex >= N) {
-            break;
-        }
-
-        // Neu danh sach cong viec da trong
-        if (i >= N) {
-            i = 0; // Reset chi so ve dau danh sach
-        }
-    }
-
-    printf("%d\n", time);
-    return 0;
-}
-
-2. Minh co mot hang doi Q va co ay muon thuc hien N thao tac, moi thao tac la mot trong 2 dang sau:
-E x: them x vao hang doi va in ra so luong phan tu cua hang doi
-D: xoa phan tu dau hang, dong thoi in phan tu da xoa va so luong phan tu cua hang doi sau khi xoa, 2 gia tri nay cach nhau khoang trang. Neu hang doi rong, in -1 o cho phan tu da xoa.
-Hay giup Minh Minh thuc hien cac thao tac tren.
-
-#include <stdio.h>
-#include <stdlib.h>
-
-#define MAX_SIZE 100
-typedef struct {
-    int data[MAX_SIZE];
-    int front;
-    int rear;
-} Queue;
-
-// Ham khoi tao hang doi
-void initializeQueue(Queue *q) {
-    q->front = 0;
-    q->rear = 0;
-}
-
-// Ham kiem tra hang doi rong
-int isEmpty(Queue *q) {
-    return q->front == q->rear;
-}
-
-// Ham kiem tra hang doi day
-int isFull(Queue *q) {
-    return q->rear == MAX_SIZE;
-}
-
-// Ham them phan tu vao hang doi
-void enqueue(Queue *q, int x) {
-    if (!isFull(q)) {
-        q->data[q->rear] = x;
-        q->rear++;
-    }
-}
-
-// Ham xoa phan tu khoi hang doi
-int dequeue(Queue *q) {
-    if (!isEmpty(q)) {
-        return q->data[q->front++];
-    }
-    return -1; // Tra ve -1 neu hang doi rong
-}
-
-// Ham lay so luong phan tu trong hang doi
-int size(Queue *q) {
-    return q->rear - q->front;
-}
-
-int main() {
-    Queue q;
-    initializeQueue(&q);
-    
-    int N;
-    scanf("%d", &N);
-
-    for (int i = 0; i < N; i++) {
-        char command[2]; // De doc thao tac 'E' hoac 'D'
-        scanf("%s", command);
-
-        if (command[0] == 'E') {
-            int x;
-            scanf("%d", &x);
-            enqueue(&q, x);
-            printf("%d\n", size(&q)); // In ra so luong phan tu sau khi them
-        } else if (command[0] == 'D') {
-            int removed = dequeue(&q);
-            if (removed == -1) {
-                printf("-1 %d\n", size(&q)); // In ra -1 va so luong sau khi xoa
-            } else {
-                printf("%d %d\n", removed, size(&q)); // In ra phan tu da xoa va so luong sau khi xoa
+void BubbleSort(recordtype a[], int n) {
+    int i, j;
+    for (i = 0; i <= n - 2; i++) {
+        for (j = n-1 ; j >=i + 1; j--) {
+            if (a[j].key < a[j - 1].key) {
+                Swap(&a[j], &a[j - 1]);
             }
         }
     }
-
-    return 0;
 }
 
 
-UNG DUNG HANG DOI
-Bang cach su dung kieu du lieu truu tuong Stack va Queue da cho, hay viet chuong trinh kiem tra mot chuoi ky tu co doc xuoi va doc nguoc nhu nhau hay khong (kiem tra chuoi palindrome).
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <string.h>
-
-#define MAX_SIZE 1000 // Kich thuoc toi da cho ngan xep va hang doi
-
-// Dinh nghia kieu du lieu ky tu
-typedef char ElementType;
-
-// Cau truc ngan xep
-typedef struct {
-    ElementType data[MAX_SIZE];
-    int top;
-} Stack;
-
-// Cau truc hang doi
-typedef struct {
-    ElementType data[MAX_SIZE];
-    int front, rear;
-} Queue;
-
-// Ham khoi tao ngan xep
-void makenullStack(Stack *pS) {
-    pS->top = -1;
-}
-
-// Kiem tra ngan xep rong
-int emptyStack(Stack S) {
-    return S.top == -1;
-}
-
-// Them phan tu vao ngan xep
-void push(ElementType x, Stack *pS) {
-    if (pS->top < MAX_SIZE - 1) {
-        pS->data[++pS->top] = x;
-    }
-}
-
-// Lay phan tu tren dinh ngan xep
-ElementType top(Stack S) {
-    if (!emptyStack(S)) {
-        return S.data[S.top];
-    }
-    return '\0'; // Tra ve gia tri mac dinh neu ngan xep rong
-}
-
-// Xoa phan tu tren dinh ngan xep
-void pop(Stack *pS) {
-    if (!emptyStack(*pS)) {
-        pS->top--;
-    }
-}
-
-// Ham khoi tao hang doi
-void makenullQueue(Queue *pQ) {
-    pQ->front = 0;
-    pQ->rear = 0;
-}
-
-// Kiem tra hang doi rong
-int emptyQueue(Queue Q) {
-    return Q.front == Q.rear;
-}
-
-// Them phan tu vao hang doi
-void enQueue(ElementType x, Queue *pQ) {
-    if (pQ->rear < MAX_SIZE) {
-        pQ->data[pQ->rear++] = x;
-    }
-}
-
-// Lay phan tu o dau hang doi
-ElementType front(Queue Q) {
-    if (!emptyQueue(Q)) {
-        return Q.data[Q.front];
-    }
-    return '\0'; // Tra ve gia tri mac dinh neu hang doi rong
-}
-
-// Xoa phan tu o dau hang doi
-void deQueue(Queue *pQ) {
-    if (!emptyQueue(*pQ)) {
-        pQ->front++;
-    }
-}
-
-// Ham kiem tra chuoi palindrome
-void checkPalindrome(const char *input) {
-    Stack s;
-    Queue q;
-    makenullStack(&s);
-    makenullQueue(&q);
-
-    // Hien thi chuoi vua nhap
-    printf("\"%s\"", input);
-
-    // Doc tung ky tu trong chuoi
-    for (int i = 0; input[i] != '\0'; i++) {
-        char ch = input[i];
-        // Chi lay chu cai
-        if (isalpha(ch)) {
-            char lowerCh = tolower(ch); // Chuyen ve chu thuong
-            push(lowerCh, &s);          // Dua vao ngan xep
-            enQueue(lowerCh, &q);       // Dua vao hang doi
-        }
-    }
-
-    // So sanh cac phan tu trong ngan xep va hang doi
-    while (!emptyQueue(q)) {
-        if (top(s) != front(q)) {
-            printf(" doc xuoi khac doc nguoc\n");
-            return;
-        }
-        pop(&s);
-        deQueue(&q);
-    }
-
-    printf(" doc xuoi va doc nguoc nhu nhau\n");
-}
-
-int main() {
-    char input[MAX_SIZE];
-    // printf("Nhap chuoi: ");
-    fgets(input, MAX_SIZE, stdin); // Doc chuoi tu nguoi dung
-    input[strcspn(input, "\n")] = 0; // Loai bo ky tu newline
-
-    checkPalindrome(input); // Kiem tra chuoi
-    return 0;
-}
 
 
-Cay tim kiem nhi phan
-
-1. Nguyen mau (Prototype)
-Ten ham: printPath()
-Tham so: 
-        - x - int
-        - T - Tree
-Kieu tra ve: khong
-Than ham (Body)
-Ap dung giai thuat tim kiem tren cay tim kiem nhi phan, moi khi di toi mot nut tren theo giai thuat tim, in gia tri khoa tai nut do len man hinh
-void printPath(int x, Tree T) {
-    while (T != NULL) {
-        printf("%d ", T->Key);
-        if (T->Key == x) {
-            printf("-> Tim thay\n");
-            return;
-        }
-        T = (x < T->Key) ? T->Left : T->Right;
-    }
-    printf("-> Khong thay\n");
-}
-2. Nguyen mau (Prototype)
-Ten ham: insertNode()
-Tham so:
-          - X - int
-          - pT - con tro Tree
-Kieu tra ve: khong
-Than ham (Body)
-Them khoa X vao cay tim kiem nhi phan chi boi con tro pT (xem lai giai thuat trong phan ly thuyet)
-void insertNode(int x, Tree *pT) {
-    if (*pT == NULL) {
-        *pT = (Tree)malloc(sizeof(struct Node));
-        (*pT)->Key = x;
-        (*pT)->Left = (*pT)->Right = NULL;
-    } else if (x < (*pT)->Key) {
-        insertNode(x, &(*pT)->Left);
-    } else if (x > (*pT)->Key) {
-        insertNode(x, &(*pT)->Right);
-    }
-}
-3. Nguyen mau (Prototype)
-Ten ham: rightSibling()
-Tham so: 
-        - x - int
-        - T - Tree
-Kieu tra ve: Tree
-Than ham (Body)
-Neu x co trong cay T, tra ve con tro chi den nut anh em ruot phai cua x (neu x khong co anh em ruot phai ket qua tra ve la NULL); nguoc lai (x khong co), ket qua tra ve la NULL
-Tree rightSibling(int x, Tree T) {
-    Tree parent = NULL;
-    while (T != NULL && T->Key != x) {
-        parent = T;
-        T = (x < T->Key) ? T->Left : T->Right;
-    }
-    return (T == NULL || parent == NULL || parent->Left != T) ? NULL : parent->Right;
-}
-4. Nguyen mau (Prototype)
-Ten ham: getParent()
-Tham so: 
-        - x - int
-        - T - Tree
-Kieu tra ve: Tree
-Than ham (Body)
-Neu x co trong cay T, tra ve con tro chi den nut cha cua x (neu x la goc ket qua tra ve la NULL); nguoc lai (x khong co), ket qua tra ve la NULL
-Tree getParent(int x, Tree T) {
-    Tree parent = NULL;
-    while (T != NULL && T->Key != x) {
-        parent = T;
-        T = (x < T->Key) ? T->Left : T->Right;
-    }
-    return (T == NULL) ? NULL : parent;
-}
-5. Nguyen mau (Prototype)
-Ten ham: getHeight()
-Tham so: 
-        - T -  Tree
-Kieu tra ve: int
-Than ham (Body)
-Neu T rong ket qua tra ve la -1, nguoc lai ket qua tra ve la chieu cao cua nut goc cua cay
-
-int getHeight(Tree T) {
-    if (T == NULL) {
-        return -1; // Neu cay rong, chieu cao la -1
-    }
-
-    // Tinh chieu cao cua nhanh trai va nhanh phai
-    int leftHeight = getHeight(T->Left);
-    int rightHeight = getHeight(T->Right);
-
-    // Chieu cao cua cay la max chieu cao cua hai nhanh cong them 1
-    return (leftHeight > rightHeight ? leftHeight : rightHeight) + 1;
-}
-
-
-6. Nguyen mau (Prototype)
-Ten ham: inOrder()
-Tham so: T - Tree
-Kieu tra ve: khong
-Than ham (Body)
-Liet ke cac khoa tren cay T theo bieu thuc duyet tien tu
-
-void inOrder(Tree T) {
-    if (T == NULL) {
-        return; // Neu cay rong, khong lam gi
-    }
-    // Duyet nhanh trai
-    inOrder(T->Left);
-    // In gia tri khoa tai nut hien tai
-    printf("%d ", T->Key);
-    // Duyet nhanh phai
-    inOrder(T->Right);
-}
-
-
-7. Nguyen mau (Prototype)
-Ten ham: getNext()
-Tham so: 
-        - x - int
-        - T - Tree
-Kieu tra ve: Tree
-Than ham (Body)
-Tra ve con tro cua nut dung sau nut co khoa x trong cay TKNP trong phep duyet trung tu; neu x la khoa phai nhat cua cay thi ket qua tra ve la NULL
-Vi du                      27
-                           /          \
-                     12               40
-                                      /
-                                    30
-          Nut  27 dung sau 12
-          Nut  40 dung sau 30
-          Nut 40 khong co nut dung sau
-
-Tree getNext(int x, Tree T) {
-    Tree successor = NULL;
-    while (T != NULL) {
-        if (x < T->Key) {
-            successor = T;
-            T = T->Left;
-        } else if (x > T->Key) {
-            T = T->Right;
-        } else {
-            if (T->Right != NULL) {
-                T = T->Right;
-                while (T->Left != NULL) T = T->Left;
-                return T;
-            }
-            return successor;
-        }
-    }
-    return NULL;
-}
-
-8. Nguyen mau (Prototype)
-Ten ham: hNode()
-Tham so: 
-       - x - int
-       - T -  Tree
-Kieu tra ve: int
-Than ham (Body)
-Neu x khong co trong cay, ket qua tra ve la -1, nguoc lai ket qua tra ve la chieu cao cua nut co khoa la x
-
-int getHeight(Tree T) {
-    return (T == NULL) ? -1 : 1 + ((getHeight(T->Left) > getHeight(T->Right)) ? getHeight(T->Left) : getHeight(T->Right));
-}
-int hNode(int x, Tree T) {
-    while (T != NULL) {
-        if (x == T->Key) {
-            return getHeight(T);
-        } else if (x < T->Key) {
-            T = T->Left;
-        } else {
-            T = T->Right;
-        }
-    }
-    return -1; // Neu khong tim thay x
-}
-
-9. Nguyen mau (Prototype)
-Ten ham: preOrder()
-Tham so: T - Tree
-Kieu tra ve: khong
-Than ham (Body)
-Liet ke cac khoa tren cay T theo bieu thuc duyet tien tu
-
-void preOrder(Tree T) {
-    // Neu cay rong, khong lam gi
-    if (T == NULL) {
+void Read_Data(recordtype a[], int *n) {
+    FILE *f = fopen("data.txt", "r");
+    if (f == NULL) {
+        printf("Loi mo file\n");
         return;
     }
-    // In gia tri khoa tai nut hien tai
-    printf("%d ", T->Key);
-    // Duyet nhanh trai
-    preOrder(T->Left);
-    // Duyet nhanh phai
-    preOrder(T->Right);
+    *n = 0;
+    while (fscanf(f, "%d%f", &a[*n].key, &a[*n].otherfields) == 2) {
+        (*n)++;
+    }
+    fclose(f);
 }
 
-10. Nguyen mau (Prototype)
-Ten ham: deleteNode()
-Tham so: 
-        - x - int
-        - pT - con tro Tree
-Kieu tra ve: khong
-Than ham (Body)
-Tien hanh xoa nut co khoa la x trong cay chi boi con tro pT
-
-Tree findMin(Tree T) {
-    while (T && T->Left) T = T->Left;
-    return T;
-}
-void deleteNode(int x, Tree *pT) {
-    if (*pT == NULL) return;
-    if (x < (*pT)->Key) {
-        deleteNode(x, &(*pT)->Left);
-    } else if (x > (*pT)->Key) {
-        deleteNode(x, &(*pT)->Right);
-    } else {
-        Tree temp = *pT;
-        if (!(*pT)->Left) {
-            *pT = (*pT)->Right;
-        } else if (!(*pT)->Right) {
-            *pT = (*pT)->Left;
-        } else {
-            temp = findMin((*pT)->Right);
-            (*pT)->Key = temp->Key;
-            deleteNode(temp->Key, &(*pT)->Right);
-            return;
-        }
-        free(temp);
+void Print_Data(recordtype a[], int n) {
+	int i;
+    for (i = 0; i < n; i++) {
+        printf("%3d %5d %8.2f\n", i + 1, a[i].key, a[i].otherfields);
     }
 }
 
-11. Nguyen mau (Prototype)
-Ten ham: getPrevious()
-Tham so: 
-        - x - int
-        - T - Tree
-Kieu tra ve: Tree
-Than ham (Body)
-Tra ve con tro cua nut dung truoc nut co khoa x trong cay TKNP; neu x la khoa trai nhat cua cay thi ket qua tra ve la NULL
-Vi du                      27
-                           /          \
-                     12               40
-                                      /
-                                    30
-          Nut 30 dung truoc 40
-          Nut  27 dung truoc 30
-          Nut 12 khong co nut dung truoc
+int main() {
+    recordtype a[100];
+    int n;
 
-Tree getPrevious(int x, Tree T) {
-    Tree previous = NULL;
-    while (T != NULL) {
-        if (x > T->Key) {
-            previous = T;
-            T = T->Right;
-        } else if (x < T->Key) {
-            T = T->Left;
-        } else {
-            if (T->Left != NULL) {
-                previous = T->Left;
-                while (previous->Right != NULL) previous = previous->Right;
+    printf("Thuat toan Selection_Sort\n\n");
+    Read_Data(a, &n);
+    printf("Du lieu truoc khi sap xep:\n");
+    Print_Data(a, n);
+//	SelectionSort(a,n);
+//	InsertSort(a,n);
+	BubbleSort(a,n);
+
+    printf("Du lieu sau khi sap xep:\n");
+    Print_Data(a, n);
+
+    return 0;
+}
+// Heap Sort 118
+
+#include <stdio.h>
+
+typedef int keytype;
+typedef float othertype;
+
+typedef struct {
+    keytype key;
+    othertype otherfields;
+} recordtype;
+
+void Swap(recordtype *x, recordtype *y) {
+    recordtype temp = *x;
+    *x = *y;
+    *y = temp;
+}
+
+void pushdown(recordtype a[], int first, int last){
+    int r = first;
+    int left, right;
+
+    while (r <= (last - 1)/2) {
+        left = 2 * r + 1;
+        right = 2 * r + 2;
+
+        if (last == left) {
+            if (a[r].key > a[last].key) {
+                Swap(&a[r], &a[last]);
             }
-            return previous;
+            r = last;
+        }
+        else if ((a[r].key > a[left].key) && (a[left].key <= a[right].key)) {
+            Swap(&a[r], &a[left]);
+            r = left;
+        }
+        else if ((a[r].key > a[right].key) && (a[right].key < a[left].key)) {
+            Swap(&a[r], &a[right]);
+            r = right;
+        }
+        else {
+            r = last;
         }
     }
-    return NULL;
 }
 
-12. Nguyen mau (Prototype)
-Ten ham: initTree()
-Tham so: khong
-Kieu tra ve: Tree
-Than ham (Body)
-Khai bao mot cay T, cho T tro ve NULL va tra ve ket qua cua ham la T
-Tree initTree() {
-    return NULL; // Tra ve NULL de bieu thi cay rong
+void heapsort(recordtype a[], int n) {
+	int i;
+    for (i = (n - 2) / 2; i >= 0; i--)
+        pushdown(a, i, n-1);
+    for (i = n - 1; i >= 2; i--) {
+        Swap(&a[0], &a[i]);
+        pushdown(a, 0, i - 1);  
+    }
+    Swap(&a[0],&a[1]);
 }
 
-13. Nguyen mau (Prototype)
-Ten ham: searchNode()
-Tham so: 
-        - x - int
-        - T - Tree
-Kieu tra ve: Tree
-Than ham (Body)
-Neu x co trong cay T, tra ve con tro chi den khoa x; nguoc lai ket qua tra ve la NULL
+void Read_Data(recordtype a[], int *n) {
+    FILE *f = fopen("data.txt", "r");
+    if (f == NULL) {
+        printf("Loi mo file\n");
+        return;
+    }
+    *n = 0;
+    while (fscanf(f, "%d%f", &a[*n].key, &a[*n].otherfields) == 2) {
+        (*n)++;
+    }
+    fclose(f);
+}
 
-Tree searchNode(int x, Tree T) {
-    while (T != NULL) {
-        if (x == T->Key) {
-            return T; // Neu tim thay khoa x, tra ve con tro toi nut
-        } else if (x < T->Key) {
-            T = T->Left; // Tim trong nhanh trai
+void Print_Data(recordtype a[], int n) {
+    int i;
+    for (i = 0; i  < n; i++) {
+        
+        printf("%3d %5d %8.2f\n", i + 1, a[i].key, a[i].otherfields);
+    }
+}
+
+int main() {
+    recordtype a[100];
+    int n;
+
+    printf("Thuat toan Quick_Sort\n");
+    Read_Data(a, &n);
+    
+    printf("Du lieu truoc khi sap xep:\n");
+    Print_Data(a, n);
+
+    heapsort(a,n);  
+
+    printf("Du lieu sau khi sap xep:\n");
+    Print_Data(a, n);
+
+    return 0;
+}
+// QuickSort 213
+
+#include <stdio.h>
+
+typedef int keytype;
+typedef float othertype;
+
+typedef struct {
+    keytype key;
+    othertype otherfields;
+} recordtype;
+
+void swap(recordtype *x, recordtype *y) {
+    recordtype temp = *x;
+    *x = *y;
+    *y = temp;
+}
+
+int partition(recordtype a[], int low, int high) {
+	int j;
+    keytype pivot = a[high].key; 
+    int i = low - 1;
+    for (j = low; j <= high - 1; j++) {
+        if (a[j].key < pivot) {  
+            i++;
+            swap(&a[i], &a[j]);
+        }
+    }
+    swap(&a[i + 1], &a[high]);  
+    return i + 1;
+}
+
+void quickSort(recordtype a[], int low, int high) {
+    if (low < high) {
+        int pi = partition(a, low, high);
+
+        quickSort(a, low, pi - 1);  
+        quickSort(a, pi + 1, high); 
+    }
+}
+
+void Read_Data(recordtype a[], int *n) {
+    FILE *f = fopen("data.txt", "r");
+    if (f == NULL) {
+        printf("Loi mo file\n");
+        return;
+    }
+    *n = 0;
+    while (fscanf(f, "%d%f", &a[*n].key, &a[*n].otherfields) == 2) {
+        (*n)++;
+    }
+    fclose(f);
+}
+
+void Print_Data(recordtype a[], int n) {
+    int i;
+    for (i = 0; i < n; i++) {
+        
+        printf("%3d %8d %8.2f\n", i + 1, a[i].key, a[i].otherfields);
+    }
+}
+
+int main() {
+    recordtype a[100];
+    int n;
+
+    printf("Thuat toan Quick_Sort\n");
+    Read_Data(a, &n);
+    
+    printf("Du lieu truoc khi sap xep:\n");
+    Print_Data(a, n);
+
+    quickSort(a, 0, n - 1);  
+
+    printf("Du lieu sau khi sap xep:\n");
+    Print_Data(a, n);
+
+    return 0;
+}
+// Tham an Balo 1 292
+// Bai toan Cai ba lo 1
+// Moi do vat co so luong khong han che 
+// Du lieu cho trong file CaiBalo1.TXT
+// Giai bai toan bang thuat toan THAM AN
+
+#include <stdio.h>
+#include <malloc.h>
+#include <string.h>
+
+typedef struct {
+	char TenDV[20];
+	float TL, GT, DG;
+	int PA;
+}DoVat;
+
+DoVat *ReadFromFile(float *W, int *n){
+     FILE *f;
+     f = fopen("CaiBalo1.TXT", "r");
+     fscanf(f, "%f",W); // Xac dinh trong luong Ba lo
+	 DoVat *dsdv;
+	 dsdv=(DoVat*)malloc(sizeof(DoVat));
+	 int i=0;
+ 	 while (!feof(f)){
+	   fscanf(f, "%f%f%[^\n]",&dsdv[i].TL,&dsdv[i].GT,&dsdv[i].TenDV);
+	   dsdv[i].DG=dsdv[i].GT/dsdv[i].TL;
+	   dsdv[i].PA=0;
+	   i++;
+	   dsdv=(DoVat*)realloc(dsdv, sizeof(DoVat)*(i+1));  
+	 }
+	 *n=i;
+     fclose(f);
+     return dsdv;
+}
+
+void swap(DoVat *x, DoVat *y){
+	DoVat Temp;
+	Temp = *x;
+	*x   = *y;
+	*y   = Temp;
+}
+
+void BubbleSort(DoVat *dsdv, int n){
+	int i,j;
+	for(i=0; i<=n-2; i++)
+	   for (j=n-1; j>=i+1; j--){
+	   	 if (dsdv[j].DG>dsdv[j-1].DG) 
+			swap(&dsdv[j],&dsdv[j-1]);
+	  }   
+}
+
+void InDSDV(DoVat *dsdv, int n, float W){
+	int i;
+	float TongTL=0.0, TongGT=0.0;
+	printf("\nPhuong an Cai Ba lo 1 dung thuat toan THAM AN nhu sau:\n");
+	printf("\nTrong luong cua ba lo = %-9.2f\n",W);
+	printf("|---|------------------|---------|---------|---------|-----------|\n");
+	printf("|STT|     Ten Do Vat   | T Luong | Gia Tri | Don Gia | Phuong an |\n");
+	printf("|---|------------------|---------|---------|---------|-----------|\n");
+	for(i=0;i<n;i++){
+		printf("|%2d |%-18s|%9.2f|%9.2f|%9.2f|%6d     |\n",
+		i+1,dsdv[i].TenDV,dsdv[i].TL,dsdv[i].GT,dsdv[i].DG,dsdv[i].PA);
+		TongTL=TongTL+dsdv[i].PA * dsdv[i].TL;
+		TongGT=TongGT+dsdv[i].PA * dsdv[i].GT;
+	}	
+	printf("|---|------------------|---------|---------|---------|-----------|\n");	
+	printf("Phuong an (theo thu tu DG giam dan): X(");
+	for(i=0; i<n-1; i++){
+		printf("%d,", dsdv[i].PA);
+	}	
+	printf("%d)", dsdv[n-1].PA);
+	printf("\nTong trong luong = %-9.2f\n",TongTL);
+	printf("Tong gia tri = %-9.2f\n",TongGT);
+	
+	
+
+}
+
+void Greedy(DoVat *dsdv,int n, float W){
+  int i;
+  for(i=0; i<n; i++) {
+     dsdv[i].PA = (W/dsdv[i].TL);
+     W = W-dsdv[i].PA * dsdv[i].TL;
+  }
+}
+
+int main(){
+	int n;
+	float W;
+	DoVat *dsdv;
+	
+	dsdv=ReadFromFile(&W, &n);
+    BubbleSort(dsdv,n);
+	Greedy(dsdv,n,W);
+	InDSDV(dsdv,n,W);
+	
+	free(dsdv);
+	return 0;
+}
+// Tham an balo 2 391
+#include <stdio.h>
+#include <malloc.h>
+#include <string.h>
+
+typedef struct {
+    char TenDV[20];
+    float TL, GT, DG;
+    int SL, PA;
+} DoVat;
+
+DoVat* ReadFromFile(float* W, int* n) {
+    FILE* f = fopen("CaiBalo2.TXT", "r");
+    if (f == NULL) {
+        printf("Loi khi mo file\n");
+        return NULL;
+    }
+
+    fscanf(f, "%f", W); 
+    DoVat* dsdv = (DoVat*)malloc(sizeof(DoVat));
+    int i = 0;
+
+    while (!feof(f)) {
+        fscanf(f, "%f%f%d%[^\n]", &dsdv[i].TL, &dsdv[i].GT, &dsdv[i].SL, dsdv[i].TenDV);
+        dsdv[i].DG = dsdv[i].GT / dsdv[i].TL; 
+        dsdv[i].PA = 0; 
+        i++;
+        dsdv = (DoVat*)realloc(dsdv, sizeof(DoVat) * (i + 1));
+    }
+    *n = i;
+    fclose(f);
+    return dsdv;
+}
+
+void swap(DoVat* x, DoVat* y) {
+    DoVat Temp = *x;
+    *x = *y;
+    *y = Temp;
+}
+
+void BubbleSort(DoVat* dsdv, int n) {
+    int i, j;
+    for (i = 0; i <= n - 2; i++) {
+        for (j = n - 1; j >= i + 1; j--) {
+            if (dsdv[j].DG > dsdv[j - 1].DG)
+                swap(&dsdv[j], &dsdv[j - 1]);
+        }
+    }
+}
+
+void InDSDV(DoVat* dsdv, int n, float W) {
+    int i;
+    float TongTL = 0.0, TongGT = 0.0;
+
+    printf("\nPhuong an Cai Ba lo 1 dung thuat toan THAM AN nhu sau:\n");
+    printf("\nTrong luong cua ba lo = %-9.2f\n", W);
+    printf("|---|------------------|---------|---------|--------|---------|-----------|\n");
+    printf("|STT|     Ten Do Vat   | T Luong | Gia Tri |So Luong| Don Gia | Phuong an |\n");
+    printf("|---|------------------|---------|---------|--------|---------|-----------|\n");
+
+    for (i = 0; i < n; i++) {
+        printf("|%2d |%-18s|%9.2f|%9.2f|%6d  |%9.2f|%6d     |\n",
+               i + 1, dsdv[i].TenDV, dsdv[i].TL, dsdv[i].GT, dsdv[i].SL, dsdv[i].DG,dsdv[i].PA);
+        TongTL = TongTL + dsdv[i].PA * dsdv[i].TL;
+        TongGT = TongGT + dsdv[i].PA * dsdv[i].GT;
+    }
+    printf("|---|------------------|---------|---------|--------|---------|-----------|\n");
+    printf("Phuong an (theo thu tu DG giam dan): X(");
+    for (i = 0; i < n - 1; i++) {
+        printf("%d,", dsdv[i].PA);
+    }
+    printf("%d)", dsdv[n - 1].PA);
+    printf("\nTong trong luong = %-9.2f\n", TongTL);
+    printf("Tong gia tri = %-9.2f\n", TongGT);
+}
+
+
+void Greedy(DoVat* dsdv, int n, float W) {
+    int i;
+    for (i = 0; i < n; i++) {
+        int max = (int)(W / dsdv[i].TL);  
+        dsdv[i].PA = (max <= dsdv[i].SL) ? max : dsdv[i].SL; 
+
+        W -= dsdv[i].PA * dsdv[i].TL;
+    }
+}
+
+int main() {
+    int n;
+    float W;
+    DoVat* dsdv;
+
+    dsdv = ReadFromFile(&W, &n);
+    if (dsdv == NULL) return 1;
+
+    BubbleSort(dsdv, n);  
+    Greedy(dsdv, n, W);   
+    InDSDV(dsdv, n, W);   
+
+    free(dsdv); 
+    return 0;
+}
+
+// THam an balo 3 494
+#include <stdio.h>
+#include <malloc.h>
+#include <string.h>
+
+typedef struct {
+    char TenDV[20]; // Item name
+    float TL,GT,DG;       // Weight of the item
+    int PA;         // Packed quantity (0 or 1 for 0/1 knapsack)
+} DoVat;
+
+DoVat *ReadFromFile(float *W, int *n) {
+    FILE *f;
+    f = fopen("CaiBalo3.TXT", "r");
+    fscanf(f, "%f", W); // Knapsack weight capacity
+    DoVat *dsdv;
+    dsdv = (DoVat*)malloc(sizeof(DoVat));
+    int i = 0;
+    while (!feof(f)) {
+        fscanf(f, "%f%f%[^\n]", &dsdv[i].TL, &dsdv[i].GT, &dsdv[i].TenDV);
+        dsdv[i].DG = dsdv[i].GT / dsdv[i].TL; // Value-to-weight ratio
+        dsdv[i].PA = 0; // Initially, no items are packed
+        i++;
+        dsdv = (DoVat*)realloc(dsdv, sizeof(DoVat)*(i+1));
+    }
+    *n = i;
+    fclose(f);
+    return dsdv;
+}
+
+// Swap two items
+void swap(DoVat *x, DoVat *y) {
+    DoVat Temp;
+    Temp = *x;
+    *x = *y;
+    *y = Temp;
+}
+
+// Sort items by their value-to-weight ratio in descending order
+void BubbleSort(DoVat *dsdv, int n) {
+    int i, j;
+    for(i = 0; i <= n - 2; i++)
+        for (j = n - 1; j >= i + 1; j--) {
+            if (dsdv[j].DG > dsdv[j - 1].DG) 
+                swap(&dsdv[j], &dsdv[j - 1]);
+        }
+}
+
+// Print the selected items and the result
+void InDSDV(DoVat *dsdv, int n, float W) {
+    int i;
+    float TongTL = 0.0, TongGT = 0.0;
+    printf("\nPhuong an Cai Ba lo 1 dung thuat toan THAM AN nhu sau:\n");
+    printf("\nTrong luong cua ba lo = %-9.2f\n", W);
+    printf("|---|------------------|---------|---------|---------|-----------|\n");
+    printf("|STT|     Ten Do Vat   | T Luong | Gia Tri | Don Gia | Phuong an |\n");
+    printf("|---|------------------|---------|---------|---------|-----------|\n");
+    for(i = 0; i < n; i++) {
+        printf("|%2d |%-18s|%9.2f|%9.2f|%9.2f|%6d     |\n",
+            i + 1, dsdv[i].TenDV, dsdv[i].TL, dsdv[i].GT, dsdv[i].DG, dsdv[i].PA);
+        TongTL = TongTL + dsdv[i].PA * dsdv[i].TL;
+        TongGT = TongGT + dsdv[i].PA * dsdv[i].GT;
+    }   
+    printf("|---|------------------|---------|---------|---------|-----------|\n");    
+    printf("Phuong an (theo thu tu DG giam dan): X(");
+    for(i = 0; i < n - 1; i++) {
+        printf("%d,", dsdv[i].PA);
+    }   
+    printf("%d)", dsdv[n - 1].PA);
+    printf("\nTong trong luong = %-9.2f\n", TongTL);
+    printf("Tong gia tri = %-9.2f\n", TongGT);
+}
+
+void Greedy(DoVat *dsdv, int n, float W) {
+    int i;
+    for(i = 0; i < n; i++) {
+        if (dsdv[i].TL <= W) { // If the item fits in the knapsack
+            dsdv[i].PA = 1;     // Take the item
+            W -= dsdv[i].TL;    // Decrease the remaining capacity
+        }
+    }
+}
+
+int main() {
+    int n;
+    float W;
+    DoVat *dsdv;
+
+    dsdv = ReadFromFile(&W, &n);
+
+    BubbleSort(dsdv, n);
+
+    Greedy(dsdv, n, W);
+
+    InDSDV(dsdv, n, W);
+
+    free(dsdv);
+    return 0;
+}
+
+//NHanh can balo 1 594
+#include <stdio.h>
+#include <malloc.h>
+#include <string.h>
+
+#define MAX_N 100
+
+typedef struct {
+    int w, v, qty;
+    float ppu; //price per unit
+    char name[25];    
+} item;
+
+void swap (item *a, item* b){
+    item temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void sort (item *a, int n){
+    for(int i = 0; i < n-1; i++)
+        for(int j = i+1; j < n; j++)
+            if(a[i].ppu < a[j].ppu)
+                swap(&a[i], &a[j]);
+}
+
+void readFile (item **a, int *n, int *m){
+    FILE *f = fopen("CaiBalo1.txt", "r");
+    *a = (item*)malloc(sizeof(item));
+    fscanf(f, "%d", m);
+    int i = 0;    
+    while (!feof(f)){
+        (*a) = realloc(*a, sizeof(item)*(i+1));
+        fscanf(f, "\n%d %d %[^\r\n]s", &(*a)[i].w, &(*a)[i].v, (*a)[i].name);
+        (*a)[i].ppu = (float)(*a)[i].v / (*a)[i].w;
+        (*a)[i].qty = 0;
+        i++;
+    }
+    *n = i;
+}
+
+void printChart (item *a, int n, int m){
+    int total_val = 0, total_weight = 0;
+    printf("|---|---------------------|-----------|-------|-------|---------|\n");
+	printf("|%-3s|%-21s|%-11s|%-7s|%-7s|%-9s|\n", "STT", "     Ten do vat", "Trong luong", "Gia tri", "Don gia","Phuong an");
+	printf("|---|---------------------|-----------|-------|-------|---------|\n");
+	for(int i = 0, k = 1; i < n; i++){        
+        printf("| %-2d| %-20s|%11d|%7d|%7.2f|%9d|\n", k++, a[i].name, a[i].w, a[i].v, a[i].ppu, a[i].qty);
+        total_val += a[i].v*a[i].qty;
+        total_weight += a[i].w*a[i].qty;
+	}	
+	printf("|---|---------------------|-----------|-------|-------|---------|\n");	
+	printf("Phuong an (theo thu tu DG giam dan): X(");
+	for(int i=0; i<n-1; i++){
+		printf("%d,", a[i].qty);
+	}	
+	printf("%d)\n", a[n-1].qty);
+	printf("Trong luong cua ba lo = %5d\n",m);
+    printf("Tong trong luong      = %5d\n", total_weight);
+    printf("Tong gia tri          = %5d\n", total_val);
+}
+
+void solve(item *a, int n, int p_val, int m, int x[], int i, float *final_res){
+	for(int j = m/a[i].w; j >= 0; j--){
+		float cur_val, remain, ubound;
+		cur_val= p_val + j*a[i].v;
+		remain = m - j*a[i].w;
+		ubound = cur_val + remain*a[i+1].ppu;
+		if(ubound > *final_res){
+			x[i] = j;			
+			if((i == n-1 || remain == 0) && cur_val > *final_res){
+				*final_res = cur_val;
+				for(int k = 0; k < n; k++){
+					a[k].qty = x[k];
+				}		
+			}
+			else
+				solve(a, n, cur_val, remain, x, i+1, final_res);
+		}		
+		x[i] = 0;	
+	}
+}
+
+int main (){
+	item *a;
+	int n, m, x[MAX_N];
+	float final_res = 0;
+	readFile(&a, &n, &m);
+	sort(a, n);	
+	solve(a, n, 0, m, x, 0, &final_res);
+	printChart(a, n, m);
+}
+
+// Nhanh an balo 2 687
+// Bai toan Cai ba lo 2
+// Moi do vat co so luong xac dinh
+// Du lieu cho trong file CaiBalo2.INP
+// Giai bai toan bang thuat toan NHANH CAN
+
+#include <stdio.h>
+#include <malloc.h>
+#include <string.h>
+
+typedef struct {
+	char TenDV[20];
+	float TL, GT, DG;
+	int SL, PA;
+} DoVat;
+
+DoVat * ReadFromFile(float *W, int *n){
+     FILE *f;
+     f = fopen("CaiBalo2.txt", "r");
+     fscanf(f, "%f",W); // Xac dinh trong luong Ba lo
+	 DoVat *dsdv;
+	 dsdv=(DoVat*)malloc(sizeof(DoVat));
+	 int i=0;
+ 	 while (!feof(f)){
+	   fscanf(f, "%f%f%d%[^\n]",&dsdv[i].TL,&dsdv[i].GT,&dsdv[i].SL,&dsdv[i].TenDV);
+	   dsdv[i].DG=dsdv[i].GT/dsdv[i].TL;
+	   dsdv[i].PA=0;
+	   i++;
+	   dsdv=(DoVat*)realloc(dsdv, sizeof(DoVat)*(i+1));  
+	 }
+	 *n=i;
+     fclose(f);
+     return dsdv;
+}
+
+void swap(DoVat *x, DoVat *y){
+	DoVat Temp;
+	Temp = *x;
+	*x   = *y;
+	*y   = Temp;
+}
+
+void BubbleSort(DoVat *dsdv, int n){
+	int i,j;
+	for(i=0; i<=n-2; i++)
+	   for (j=n-1; j>=i+1; j--){
+	   	 if (dsdv[j].DG>dsdv[j-1].DG) 
+			swap(&dsdv[j],&dsdv[j-1]);
+	  }   
+}
+
+void InDSDV(DoVat *dsdv ,int n, float W){
+	int i;
+	float TongTL=0.0, TongGT=0.0;
+	printf("\nPhuong an Cai Ba lo 2 dung thuat toan NHANH CAN nhu sau:\n");
+	printf("|---|--------------------|---------|---------|---------|---------|-----------|\n");
+	printf("|STT|     Ten Do Vat     |T. Luong | Gia Tri |So luong | Don gia | Phuong an |\n");
+	printf("|---|--------------------|---------|---------|---------|---------|-----------|\n");
+	for(i=0;i<n;i++){
+		printf("|%2d |%-20s|%9.2f|%9.2f|%5d    |%9.2f|%6d     |\n",
+		i+1,dsdv[i].TenDV,dsdv[i].TL,dsdv[i].GT,dsdv[i].SL,dsdv[i].DG, dsdv[i].PA);
+		TongTL=TongTL+dsdv[i].PA * dsdv[i].TL;
+		TongGT=TongGT+dsdv[i].PA * dsdv[i].GT;
+	}	
+	printf("|---|--------------------|---------|---------|---------|---------|-----------|\n");	
+	printf("Trong luong cua ba lo = %-9.2f\n",W);
+	printf("Tong trong luong = %-9.2f\n",TongTL);
+	printf("Tong gia tri = %-9.2f\n",TongGT);
+}
+
+// Tinh cac dai luong tai nut goc
+void Tao_Nut_Goc(float W, float *V, float *CT, float *GLNTT, float *TGT, float DG_Max){
+	*TGT = 0.0;
+	*V = W;
+	*CT = *V * DG_Max; 	// Can tren cua nut goc
+	*GLNTT = 0.0;
+} 
+
+//Ghi nhan phuong an tot nhat tam thoi
+void Cap_Nhat_GLNTT(float TGT, float *GLNTT, int x[], DoVat *dsdv, int n){
+	 int i;
+	 if(*GLNTT < TGT){
+		 *GLNTT = TGT;
+		 for(i=0;i<n;i++)
+		 	dsdv[i].PA=x[i];
+	 }
+}
+
+int min(int a, int b){
+	return a<b? a:b;
+}
+
+void Nhanh_Can(int i, float *TGT, float *CT, float *V, float *GLNTT, int x[], DoVat *dsdv, int n){
+	 int j; 	// j la so vat duoc chon
+	 int yk; 	// So do vat lon nhat co the chon
+	 yk = min(dsdv[i].SL, *V/dsdv[i].TL);	
+	 for(j = yk; j>=0; j--){	// Xet tat ca cac kha nang co the phan nhanh theo so luong do vat
+	 		// Ung voi mot gia tri cua j la mot nut tren cay 
+	 		// Tinh 3 dai luong cua mot nut trong
+	 		
+		 *TGT = *TGT + j*dsdv[i].GT;
+		 *V = *V - j*dsdv[i].TL;
+		 *CT = *TGT + *V * dsdv[i+1].DG;	// dsdv[i+1].DG la DG vat ke tiep cua vat i (i + 1)
+		
+		 if(*CT > *GLNTT){ 					// Truong hop Chua cat tia (Dieu kien Cat tia la khi CT <= GLNTT)
+			x[i] = j;
+		 	if((i==n-1)||(*V==0)) 		// Da xet het tat ca cac do vat hoac ba lo da day
+		 		Cap_Nhat_GLNTT(*TGT, GLNTT, x, dsdv, n);
+		 	else
+		 		Nhanh_Can(i+1, TGT, CT, V, GLNTT, x, dsdv, n); //Xet nut con cua nut i
+	 	}
+	 // Quay lui xet nut khac
+	 x[i] = 0;
+	 *TGT = *TGT - j*dsdv[i].GT;	// Tra lai Tong gia tri cua nut cha
+	 *V = *V + j*dsdv[i].TL;		// Tra lai Trong luong con lai cua nut cha
+	 }
+}
+	
+int main(){
+	DoVat * dsdv;	// Danh sach cac do vat (mang dong cua cac do vat)
+	int n; 			// luu so luong do vat
+	float W; 		// Luu trong luong cua Ba lo
+	
+	float CT; 		// Luu can tren
+	float TGT; 		// Luu Tong gia tri cua cac vat da duoc chon tai moi nut
+	float V; 		// Luu Trong luong con lai cua Ba lo tai moi nut
+	float GLNTT; 	// Luu Gia lon nhat tam thoi 
+	
+	dsdv = ReadFromFile(&W, &n);
+	
+	int x[n];		// Luu phuong an tot nhat tam thoi
+	
+	BubbleSort(dsdv,n);
+	Tao_Nut_Goc(W, &V, &CT, &GLNTT, &TGT, dsdv[0].DG);
+	Nhanh_Can(0, &TGT, &CT, &V, &GLNTT, x, dsdv, n);
+	InDSDV(dsdv,n,W);
+	
+	free(dsdv);
+	return 0;
+}
+
+// Nhanh can balo 3 828
+//Moi do vat chi co mot cai
+
+#include <stdio.h>
+#include <malloc.h>
+#include <string.h>
+
+typedef struct {
+    char TenDV[20];  // Ten do vat
+    float TL, GT, DG; // Trong luong, gia tri, va ty le gia tri/trong luong
+    int SL,PA; // So luong do vat (SL = 1), Phuong an chon (PA = 1 neu chon, PA = 0 neu khong)
+} DoVat;
+
+// Doc du lieu tu file CaiBalo2.txt
+DoVat* ReadFromFile(float* W, int* n) {
+    FILE* f;
+    f = fopen("CaiBalo3.txt", "r");
+    fscanf(f, "%f", W); // Xac dinh trong luong Ba lo
+    DoVat* dsdv;
+    dsdv = (DoVat*)malloc(sizeof(DoVat));
+    int i = 0;
+    while (!feof(f)) {
+        fscanf(f, "%f%f%[^\n]", &dsdv[i].TL, &dsdv[i].GT, dsdv[i].TenDV);
+        dsdv[i].SL = 1; // Moi mon do chi co 1 cai
+        dsdv[i].DG = dsdv[i].GT / dsdv[i].TL; // Tinh ty le gia tri/trong luong
+        dsdv[i].PA = 0; // Co danh dau phuong an chon (0: chua chon, 1: da chon)
+        i++;
+        dsdv = (DoVat*)realloc(dsdv, sizeof(DoVat)*(i + 1));  
+    }
+    *n = i;
+    fclose(f);
+    return dsdv;
+}
+
+// Hoan doi 2 do vat
+void swap(DoVat* x, DoVat* y) {
+    DoVat Temp;
+    Temp = *x;
+    *x = *y;
+    *y = Temp;
+}
+
+// Sap xep danh sach do vat theo ty le gia tri/trong luong giam dan
+void BubbleSort(DoVat* dsdv, int n) {
+    int i, j;
+    for (i = 0; i <= n - 2; i++)
+        for (j = n - 1; j >= i + 1; j--) {
+            if (dsdv[j].DG > dsdv[j - 1].DG)
+                swap(&dsdv[j], &dsdv[j - 1]);
+        }
+}
+
+// In danh sach do vat va ket qua
+void InDSDV(DoVat* dsdv, int n, float W) {
+    int i;
+    float TongTL = 0.0, TongGT = 0.0;
+    printf("\nPhuong an cai ba lo 01 nhu sau:\n");
+    printf("|---|--------------------|---------|---------|---------|---------|-----------|\n");
+    printf("|STT|     Ten Do Vat     |T. Luong | Gia Tri | So Luong| Don Gia | Phuong An |\n");
+    printf("|---|--------------------|---------|---------|---------|---------|-----------|\n");
+    for (i = 0; i < n; i++) {
+        printf("|%2d |%-20s|%9.2f|%9.2f|%5d    |%9.2f|%6d     |\n",
+               i + 1, dsdv[i].TenDV, dsdv[i].TL, dsdv[i].GT, dsdv[i].SL, dsdv[i].DG, dsdv[i].PA);
+        TongTL = TongTL + dsdv[i].PA * dsdv[i].TL;
+        TongGT = TongGT + dsdv[i].PA * dsdv[i].GT;
+    }
+    printf("|---|--------------------|---------|---------|---------|---------|-----------|\n");
+    printf("Trong luong ba lo = %-9.2f\n", W);
+    printf("Tong trong luong = %-9.2f\n", TongTL);
+    printf("Tong gia tri = %-9.2f\n", TongGT);
+}
+
+// Tao cac dai luong ban dau
+void Tao_Nut_Goc(float W, float* V, float* CT, float* GLNTT, float* TGT, float DG_Max) {
+    *TGT = 0.0;
+    *V = W;
+    *CT = *V * DG_Max; // Can tren cua nut goc
+    *GLNTT = 0.0;
+}
+
+// Cap nhat gia tri lon nhat tam thoi
+void Cap_Nhat_GLNTT(float TGT, float* GLNTT, int x[], DoVat* dsdv, int n) {
+    int i;
+    if (*GLNTT < TGT) {
+        *GLNTT = TGT;
+        for (i = 0; i < n; i++)
+            dsdv[i].PA = x[i]; // Luu phuong an tot nhat
+    }
+}
+
+// Ham tim gia tri nho hon cua 2 so
+int min(int a, int b) {
+    return a < b ? a : b;
+}
+
+// Thuat toan Nhanh Can (Branch and Bound)
+void Nhanh_Can(int i, float* TGT, float* CT, float* V, float* GLNTT, int x[], DoVat* dsdv, int n) {
+    int j;  // j la so do vat duoc chon (0 hoac 1)
+    int yk;  // So do vat toi da co the chon
+
+    yk = min(dsdv[i].SL, *V / dsdv[i].TL);  // Tinh so mon do toi da co the chon
+
+    for (j = yk; j >= 0; j--) {  // Chon tu 0 den yk mon do
+        *TGT = *TGT + j * dsdv[i].GT;
+        *V = *V - j * dsdv[i].TL;
+        *CT = *TGT + *V * dsdv[i + 1].DG; // Can tren cho nut tiep theo
+
+        if (*CT > *GLNTT) {  // Neu khong cat tia
+            x[i] = j;
+            if ((i == n - 1) || (*V == 0))  // Da xet het do vat hoac ba lo day
+                Cap_Nhat_GLNTT(*TGT, GLNTT, x, dsdv, n);  // Cap nhat phuong an tot nhat
+            else
+                Nhanh_Can(i + 1, TGT, CT, V, GLNTT, x, dsdv, n);  // Tien sau vao cay tim kiem
+        }
+
+        // Quay lai xet cac truong hop khac
+        x[i] = 0;
+        *TGT = *TGT - j * dsdv[i].GT;  // Quay lai gia tri cua nut cha
+        *V = *V + j * dsdv[i].TL;     // Quay lai trong luong con lai cua nut cha
+    }
+}
+
+int main() {
+    DoVat* dsdv;  // Danh sach cac do vat (mang dong)
+    int n;         // So luong do vat
+    float W;       // Trong luong cua ba lo
+
+    float CT;      // Can tren
+    float TGT;     // Tong gia tri cua cac do vat da chon
+    float V;       // Trong luong con lai cua ba lo
+    float GLNTT;   // Gia tri lon nhat tam thoi
+
+    dsdv = ReadFromFile(&W, &n);
+
+    int x[n];      // Luu phuong an toan canh tam thoi
+
+    BubbleSort(dsdv, n);
+    Tao_Nut_Goc(W, &V, &CT, &GLNTT, &TGT, dsdv[0].DG);
+    Nhanh_Can(0, &TGT, &CT, &V, &GLNTT, x, dsdv, n);
+    InDSDV(dsdv, n, W);
+
+    free(dsdv);
+    return 0;
+}
+
+// Bai toan cai ba lo 1 973
+// Moi do vat co so luong khong han che
+// Du lieu cho trong file QHD_CaiBalo.INP
+// Giai bai toan bang thuat toan QUY HOACH DONG
+
+#include <stdio.h>
+#include <malloc.h>
+#include <string.h>
+
+typedef struct {
+	char TenDV[20];
+	int TL, GT, PA;
+} DoVat;
+
+typedef int bang[50][100];// Ba lo co trong luong toi da 99 va co toi da 50 do vat
+
+DoVat *ReadFromFile(int *W, int *n){
+     FILE *f;
+     f = fopen("CaiBalo1,3.txt", "r");
+     fscanf(f, "%d",W); // Xac dinh trong luong Ba lo
+	 DoVat *dsdv;
+	 dsdv=(DoVat*)malloc(sizeof(DoVat));
+	 int i=0;
+ 	 while (!feof(f)){
+	   fscanf(f, "%d%d%[^\n]",&dsdv[i].TL,&dsdv[i].GT,&dsdv[i].TenDV);
+	   dsdv[i].PA=0;
+	   i++;
+	   dsdv=(DoVat*)realloc(dsdv,sizeof(DoVat)*(i+1));  
+	 }
+	 *n=i;
+     fclose(f);
+     return dsdv;
+}
+
+void InDSDV(DoVat *dsdv ,int n, int W){
+	int i, TongTL=0, TongGT=0;
+	printf("\nPhuong an Cai Ba lo 1 dung thuat toan QUY HOACH DONG nhu sau:\n");
+		printf("|---|------------------|----------|---------|-----------|\n");
+		printf("|STT|     Ten Do Vat   | T Luong  | Gia Tri | Phuong an |\n");
+		printf("|---|------------------|----------|---------|-----------|\n");
+	for(i=0;i<n;i++){
+		printf("|%2d |%-18s|%5d     |%5d    |%6d     |\n",
+		i+1,dsdv[i].TenDV,dsdv[i].TL,dsdv[i].GT,dsdv[i].PA);
+		TongTL=TongTL+dsdv[i].PA * dsdv[i].TL;
+		TongGT=TongGT+dsdv[i].PA * dsdv[i].GT;
+	}	
+	printf("|---|------------------|----------|---------|-----------|\n");	
+	printf("Trong luong cua ba lo = %-9d\n",W);
+	printf("Tong trong luong = %-9d\n",TongTL);
+	printf("Tong gia tri = %-9d\n",TongGT);
+}
+
+void TaoBang(DoVat *dsdv,int n,int W, bang F,bang X){
+ 	int xk, yk, k;
+ 	int FMax, XMax, V;
+	
+	// Dien dong dau tien cua hai bang
+ 	for(V= 0; V<=W; V++) {
+ 		X[0][V] = V/dsdv[0].TL;
+ 		F[0][V] = X[0][V] * dsdv[0].GT;
+ 	}
+	
+	//  ien c c d ng c n lai
+	 for(k= 1; k<n; k++)
+		 for(V=0; V<=W; V++) {
+			 FMax = F[k-1][V] ;
+			 XMax = 0;
+			 yk = V/dsdv[k].TL;
+			 for(xk = 1; xk<=yk; xk++)
+			 	if(F[k-1][V-xk*dsdv[k].TL]+xk*dsdv[k].GT>FMax){
+			 		FMax=F[k-1][V-xk*dsdv[k].TL]+xk*dsdv[k].GT;
+			 		XMax= xk;
+			 		}
+			 F[k][V] = FMax;
+			 X[k][V] = XMax;
+	 	}
+}
+
+void InBang(int n, int W, bang F, bang X){
+	int V, k;
+	for(k=0; k<n; k++){
+		for(V=0; V<=W; V++)
+		 	printf("|%4d%2d",F[k][V], X[k][V]);
+		printf("\n");
+	}
+}
+
+void TraBang(DoVat *dsdv, int n, int W, bang X) {
+	int k, V;
+	V = W;
+	for(k= n-1; k>=0; k--) {
+	 	dsdv[k].PA = X[k][V];
+	 	V = V - X[k][V] * dsdv[k].TL;
+	}
+}
+
+int main(){
+	int n, W;
+	bang X,F;
+	DoVat *dsdv;
+	dsdv=ReadFromFile(&W, &n);
+	
+	TaoBang(dsdv,n,W,F,X);
+	InBang(n,W,F,X);
+	printf("\n");
+	TraBang(dsdv,n,W,X);
+	InDSDV(dsdv,n,W);
+	
+	free(dsdv);
+	return 0;
+}
+
+#include <stdio.h> //1085
+#include <malloc.h>
+#include <string.h>
+
+typedef struct {
+    char TenDV[20];
+    int TL, GT, PA, SL; // Them truong SL (so luong) vao
+} DoVat;
+
+typedef int bang[50][100]; // Ba lo co trong luong toi da 99 va co toi da 50 do vat
+
+// Doc du lieu tu file
+DoVat *ReadFromFile(int *W, int *n){
+    FILE *f;
+    f = fopen("CaiBalo2.txt", "r");
+    fscanf(f, "%d", W); // Xac dinh trong luong Ba lo
+    DoVat *dsdv;
+    dsdv = (DoVat*)malloc(sizeof(DoVat));
+    int i = 0;
+    while (!feof(f)) {
+        fscanf(f, "%d%d%d%[^\n]", &dsdv[i].TL, &dsdv[i].GT, &dsdv[i].SL, dsdv[i].TenDV);
+        dsdv[i].PA = 0;
+        i++;
+        dsdv = (DoVat*)realloc(dsdv, sizeof(DoVat) * (i + 1));  
+    }
+    *n = i;
+    fclose(f);
+    return dsdv;
+}
+
+// In danh sach do vat
+void InDSDV(DoVat *dsdv, int n, int W) {
+    int i, TongTL = 0, TongGT = 0;
+    printf("\nPhuong an Cai Ba lo 2 dung thuat toan QUY HOACH DONG nhu sau:\n");
+    printf("|---|------------------|----------|---------|----------|-----------|\n");
+    printf("|STT|     Ten Do Vat   | T Luong  | Gia Tri | So luong | Phuong an |\n");
+    printf("|---|------------------|----------|---------|----------|-----------|\n");
+    for(i = 0; i < n; i++) {
+        printf("|%2d |%-18s|%5d     |%5d    |%5d     |%6d     |\n",
+            i + 1, dsdv[i].TenDV, dsdv[i].TL, dsdv[i].GT, dsdv[i].SL, dsdv[i].PA);
+        TongTL = TongTL + dsdv[i].PA * dsdv[i].TL;
+        TongGT = TongGT + dsdv[i].PA * dsdv[i].GT;
+    }  
+    printf("|---|------------------|----------|---------|----------|-----------|\n");
+    printf("Trong luong cua ba lo = %-9d\n", W);
+    printf("Tong trong luong = %-9d\n", TongTL);
+    printf("Tong gia tri = %-9d\n", TongGT);
+}
+
+// Tao bang DP cho bai toan
+void TaoBang(DoVat *dsdv, int n, int W, bang F, bang X) {
+    int xk, yk, k;
+    int FMax, XMax, V;
+
+    // Dien dong dau tien cua bang DP
+    for(V = 0; V <= W; V++) {
+        X[0][V] = V / dsdv[0].TL;  // Luong toi da do vat co the chon
+        if(X[0][V] > dsdv[0].SL) X[0][V] = dsdv[0].SL;  // Khong vuot qua so luong co san
+        F[0][V] = X[0][V] * dsdv[0].GT;
+    }
+
+    // Cac dong tiep theo cua bang DP
+    for(k = 1; k < n; k++)
+        for(V = 0; V <= W; V++) {
+            FMax = F[k - 1][V];
+            XMax = 0;
+            yk = V / dsdv[k].TL;  // Tinh so luong toi da co the lay
+            if(yk > dsdv[k].SL) yk = dsdv[k].SL;  // Gioi han theo so luong co san cua do vat k
+            for(xk = 1; xk <= yk; xk++) {
+                if(F[k - 1][V - xk * dsdv[k].TL] + xk * dsdv[k].GT > FMax) {
+                    FMax = F[k - 1][V - xk * dsdv[k].TL] + xk * dsdv[k].GT;
+                    XMax = xk;
+                }
+            }
+            F[k][V] = FMax;
+            X[k][V] = XMax;
+        }
+}
+
+// In bang DP (chi danh cho debug)
+void InBang(int n, int W, bang F, bang X) {
+    int V, k;
+    for(k = 0; k < n; k++) {
+        for(V = 0; V <= W; V++)
+            printf("|%4d%2d", F[k][V], X[k][V]);
+        printf("\n");
+    }
+}
+
+// Truy vet lai phuong an
+void TraBang(DoVat *dsdv, int n, int W, bang X) {
+    int k, V;
+    V = W;
+    for(k = n - 1; k >= 0; k--) {
+        dsdv[k].PA = X[k][V];
+        V = V - X[k][V] * dsdv[k].TL;
+    }
+}
+
+// Ham main
+int main() {
+    int n, W;
+    bang X, F;
+    DoVat *dsdv;
+    dsdv = ReadFromFile(&W, &n);
+     
+    TaoBang(dsdv, n, W, F, X);
+    InBang(n, W, F, X);  // Neu can in bang DP, co the bo comment
+    TraBang(dsdv, n, W, X);
+    InDSDV(dsdv, n, W);
+    
+    free(dsdv);
+    return 0;
+}
+
+#include <stdio.h> //1200
+#include <malloc.h>
+#include <string.h>
+
+typedef struct {
+    char TenDV[20];
+    int TL, GT, PA; // PA la phuong an chon do vat
+} DoVat;
+
+typedef int bang[50][100]; // Ba lo co trong luong toi da 99 va co toi da 50 do vat
+
+// Doc du lieu tu file
+DoVat *ReadFromFile(int *W, int *n){
+    FILE *f;
+    f = fopen("CaiBalo1,3.txt", "r");
+    fscanf(f, "%d", W); // Xac dinh trong luong Ba lo
+    DoVat *dsdv;
+    dsdv = (DoVat*)malloc(sizeof(DoVat));
+    int i = 0;
+    while (!feof(f)) {
+        fscanf(f, "%d%d%[^\n]", &dsdv[i].TL, &dsdv[i].GT, dsdv[i].TenDV);
+        dsdv[i].PA = 0; // Khoi tao phuong an cho tung do vat
+        i++;
+        dsdv = (DoVat*)realloc(dsdv, sizeof(DoVat) * (i + 1));  
+    }
+    *n = i;
+    fclose(f);
+    return dsdv;
+}
+
+// In danh sach do vat
+void InDSDV(DoVat *dsdv, int n, int W) {
+    int i, TongTL = 0, TongGT = 0;
+    printf("\nPhuong an Cai Ba lo 1 dung thuat toan QUY HOACH DONG nhu sau:\n");
+    printf("|---|------------------|----------|---------|-----------|\n");
+    printf("|STT|     Ten Do Vat   | T Luong  | Gia Tri | Phuong an |\n");
+    printf("|---|------------------|----------|---------|-----------|\n");
+    for(i = 0; i < n; i++) {
+        printf("|%2d |%-18s|%5d     |%5d    |%6d     |\n",
+            i + 1, dsdv[i].TenDV, dsdv[i].TL, dsdv[i].GT, dsdv[i].PA);
+        TongTL = TongTL + dsdv[i].PA * dsdv[i].TL;
+        TongGT = TongGT + dsdv[i].PA * dsdv[i].GT;
+    }  
+    printf("|---|------------------|----------|---------|-----------|\n");  
+    printf("Trong luong cua ba lo = %-9d\n", W);
+    printf("Tong trong luong = %-9d\n", TongTL);
+    printf("Tong gia tri = %-9d\n", TongGT);
+}
+
+// Tao bang DP cho bai toan
+void TaoBang(DoVat *dsdv, int n, int W, bang F, bang X) {
+    int k, V;
+    int FMax, XMax;
+
+    // Dien dong dau tien cua bang DP
+    for(V = 0; V <= W; V++) {
+        if(V >= dsdv[0].TL) {
+            F[0][V] = dsdv[0].GT;
+            X[0][V] = 1;
         } else {
-            T = T->Right; // Tim trong nhanh phai
+            F[0][V] = 0;
+            X[0][V] = 0;
         }
     }
-    return NULL; // Neu khong tim thay, tra ve NULL
+
+    // Cac dong tiep theo cua bang DP
+    for(k = 1; k < n; k++)
+        for(V = 0; V <= W; V++) {
+            FMax = F[k - 1][V];
+            XMax = 0;
+            // Neu co the chon do vat k
+            if(V >= dsdv[k].TL) {
+                if(F[k - 1][V - dsdv[k].TL] + dsdv[k].GT > FMax) {
+                    FMax = F[k - 1][V - dsdv[k].TL] + dsdv[k].GT;
+                    XMax = 1;
+                }
+            }
+            F[k][V] = FMax;
+            X[k][V] = XMax;
+        }
 }
 
-14. Nguyen mau (Prototype)
-Ten ham: isEmpty()
-Tham so: T - Tree
-Kieu tra ve: int
-Than ham (Body)
-Neu cay T rong, ket qua tra ve la 1, nguoc lai ket qua tra ve la 0
-int isEmpty(Tree T) {
-    return T == NULL; // Tra ve 1 neu cay rong, 0 neu khong
-}
-15. Nguyen mau (Prototype)
-Ten ham: posOrder()
-Tham so: T - Tree
-Kieu tra ve: khong
-Than ham (Body)
-Liet ke cac khoa tren cay T theo bieu thuc duyet hau tu
-void posOrder( T) {
-    if (T == NULL) return; // Neu cay rong, khong lam gi ca
-    posOrder(T->Left);  // Duyet nhanh trai
-    posOrder(T->Right); // Duyet nhanh phai
-    printf("%d ", T->Key); // In khoa cua nut hien tai
+// In bang DP (chi danh cho debug)
+void InBang(int n, int W, bang F, bang X) {
+    int V, k;
+    for(k = 0; k < n; k++) {
+        for(V = 0; V <= W; V++)
+            printf("|%4d%2d", F[k][V], X[k][V]);
+        printf("\n");
+    }
 }
 
+// Truy vet lai phuong an
+void TraBang(DoVat *dsdv, int n, int W, bang X) {
+    int k, V;
+    V = W;
+    for(k = n - 1; k >= 0; k--) {
+        dsdv[k].PA = X[k][V];
+        V = V - X[k][V] * dsdv[k].TL;
+    }
+}
+
+// Ham main
+int main() {
+    int n, W;
+    bang X, F;
+    DoVat *dsdv;
+    dsdv = ReadFromFile(&W, &n);
+    
+    TaoBang(dsdv, n, W, F, X);
+    InBang(n, W, F, X);  // Neu can in bang DP, co the bo comment
+    TraBang(dsdv, n, W, X);
+    InDSDV(dsdv, n, W);
+    
+    free(dsdv);
+    return 0;
+}
+
+// Bai toan tra tien cua may ATM 1318
+// Du lieu cho trong file D:/ATM.INP
+// Giai bang phuong phap THAM AN
+
+#include <stdio.h>
+#include <malloc.h>
+#include <string.h>
+
+typedef struct {
+	char TenTien[25];
+	int MG,PA;
+}Tien;
 
 
+Tien * ReadFromFile(int *n){
+	FILE *f = fopen("ATM.txt","r");
+	Tien *dslt = (Tien*)malloc(sizeof(Tien));
+	int i=0;
+	while (!feof(f)){
+		fscanf(f, "%d%[^\n]",&dslt[i].MG,&dslt[i].TenTien);
+		dslt[i].PA=0;
+		i++;
+		dslt=(Tien*)realloc(dslt, sizeof(Tien)*(i+1));
+	}
+	*n=i;
+	fclose(f);
+	return dslt;
+}
+ 
+
+void Swap(Tien *x, Tien *y){
+	Tien Temp;
+	Temp = *x;
+	*x = *y;
+	*y = Temp;
+	}
+	// Sap xep theo thu tu giam dan cua Menh gia tien
+
+void BubbleSort(Tien *dslt, int n){
+int i,j;
+for(i=0; i<n-2; i++)
+for (j=n-1; j>=i+1; j--){
+if (dslt[j].MG>dslt[j-1].MG)
+Swap(&dslt[j],&dslt[j-1]);
+}
+}
+
+void InDS(Tien *dslt , int n, int TienCanRut){
+int i;
+int TongTienTra=0;
+printf("|---|-------------------------|---------|---------|----------|\n");
+    printf("|%-3s|%-25s|%-9s|%-9s|%-10s|\n", "STT", "   Loai tien ","Menh Gia", "So to","Thanh tien");
+    printf("|---|-------------------------|---------|---------|----------|\n");
+    for(i=0;i<n;i++){
+    	if (dslt[i].PA !=0){
+       printf("|%-3d",i+1);
+       printf("|%-25s",dslt[i].TenTien);
+       printf("|%-9d",dslt[i].MG);
+       printf("|%-9d",dslt[i].PA);
+       printf("|%-10d|\n",dslt[i].MG*dslt[i].PA);
+       TongTienTra=TongTienTra+dslt[i].PA * dslt[i].MG;
+   }
+   else {
+   	continue;
+   }
+   }
+    printf("|---|-------------------------|---------|---------|----------|\n");
+    printf("So tien can rut= %9d\n",TienCanRut);
+    printf("So tien da tra= %9d\n", TongTienTra);
+}
+
+void Greedy(Tien *dslt,int n, int TienCanRut){
+  int i=0;
+  while(i<n&&TienCanRut>0) {
+    dslt[i].PA= TienCanRut/dslt[i].MG;
+    TienCanRut = TienCanRut-dslt[i].PA *dslt[i].MG;
+    i++;
+ }
+}
+
+int main(){
+    int n;
+    int TienCanRut;
+    printf("Nhap so tien can rut: ");
+    scanf("%d",&TienCanRut);
+    Tien *dslt;
+    dslt=ReadFromFile(&n);
+    BubbleSort(dslt,n);
+    Greedy(dslt,n,TienCanRut);
+    InDS(dslt,n,TienCanRut);
+    free(dslt);
+    return 0;
+}
+
+/* Thuat toan THAM AN: 1412
+- Sap xep cac canh theo thu tu tang dan cua do dai
+- Uu tien chon cac canh co do dai nho nhat dua vao Phuong an
+- Mot canh duoc dua vao Phuong an neu no khong tao thanh dinh cap 3 va khong tao thanh chu trinh thieu
+
+Du lieu cho trong file "TSP.txt"
+6
+0		5.00	7.07	16.55	15.52	18.00
+5.00	0		5.00	11.70	11.05	14.32
+7.07	5.00	0		14.00	14.32	18.38
+16.55	11.70	14.00	0		3.00	7.62
+15.52	11.05	14.32	3.00	0		5.00
+18.00	14.32	18.38	7.62	5.00	0
+
+*/
+
+#include <stdio.h>
+#define size 30
+
+/*Khai bao*/
+typedef struct {
+	float do_dai;
+	int dau, cuoi;
+} canh;
+
+void read_file(char file_name[], canh a[], int *n){
+	int i,j,t;
+	float temp;
+	FILE *f;
+	f=fopen(file_name, "r");
+	if (f==NULL){
+		printf("Loi mo file!!!\n");
+		return;
+	}
+	
+	fscanf(f,"%d",n); // Doc so dinh cua do thi n
+	
+	int k=0;
+	for(i=0; i<*n; i++)
+		for(j=i; j<*n; j++)
+			if(i==j) for(t=0; t<=j; t++)	fscanf(f,"%f",&temp); // Doc bo qua cac so duoi duong cheo chinh
+			else {
+				fscanf(f,"%f",&a[k].do_dai); // Doc luu tru cac so tren duong cheo chinh
+				a[k].dau=i;
+				a[k].cuoi=j;
+				k++;
+			}
+	fclose(f);
+}
+
+void in_ds_canh(canh a[], int m, int la_PA){
+	int i;
+	float tong=0.0;
+	for(i=0; i<m; i++){
+		printf("%3d %c%c=%8.2f\n", i+1, a[i].dau+97, a[i].cuoi+97, a[i].do_dai);
+		if (la_PA)
+			tong+= a[i].do_dai;
+	}
+		if (la_PA)
+			printf("Tong do dai cac canh = %5.2f\n", tong);
+}
+
+/*Doi cho*/
+void swap(canh *x, canh *y){
+	canh temp= *x;
+	*x = *y;
+	*y = temp;
+}
+
+void bubble_sort(canh a[], int n){
+	int i,j;
+	for(i=0; i<n-1; i++)
+		for(j=n-1; j>i; j--)
+			if(a[j].do_dai<a[j-1].do_dai)	
+				swap(&a[j], &a[j-1]);
+}
+	
+int dinh_cap3(canh PA[], int k, canh moi){
+	int i,dem;
+	i=0;
+	dem=1;
+	while (i<k && dem <3){
+		if (moi.dau==PA[i].dau || moi.dau==PA[i].cuoi)
+		dem++;
+	i++;
+	}
+	if (dem==3)	return 1;
+	
+	i=0;
+	dem=1;
+	while (i<k && dem <3){
+		if (moi.cuoi==PA[i].dau || moi.cuoi==PA[i].cuoi)
+		dem++;
+	i++;
+	}
+	return dem==3;
+}
+
+void init_forest(int parent[], int n){
+	int i;
+	for(i=0; i<n; i++) 
+		parent[i]=i;
+}
+
+int find_root(int parent[], int u){
+	while (u != parent[u])
+		u = parent[u];
+		return u;
+}
+
+int chu_trinh(int r_dau, int r_cuoi){
+	return (r_dau == r_cuoi);
+}
+
+void update_forest(int parent[], int r1, int r2){
+	parent[r2]= r1; //Hop nhat hai cay voi nhau
+}
+	
+void greedy(canh ds_canh[], int n, canh PA[]){
+	int i,j;
+	int parent[n];
+	init_forest(parent,n);
+	int r_dau, r_cuoi;
+// Chon cac canh nho nhat khong tao thanh dinh cap 3 va khong tao thanh chu trinh de dua vao PA
+	j= 0;
+	for(i=0; i<n*(n-1)/2 && j<n-1; i++){
+		r_dau= find_root(parent, ds_canh[i].dau);
+		r_cuoi= find_root(parent, ds_canh[i].cuoi);
+		if (!dinh_cap3(PA,j, ds_canh[i]) && !chu_trinh(r_dau, r_cuoi)){
+			PA[j]= ds_canh[i]; //ds_canh[i] khong tao dinh cap 3, khong tao thanh chu trinh thieu thi dua vao PA
+			j++;
+			update_forest(parent, r_dau, r_cuoi); //Hop nhat 2 cay: Dat cha cua goc cuoi bang goc dau
+		}
+	}
+	
+// Den day PA da co n-1 canh
+// Tim mot canh trong so cac canh chua xet dua vao PA neu no khong tao thanh dinh cap 3 nhung phai tao thanh CHU TRINH
+	for(; i<n*(n-1)/2; i++){
+		r_dau= find_root(parent, ds_canh[i].dau);
+		r_cuoi= find_root(parent, ds_canh[i].cuoi);
+		if ((!dinh_cap3(PA, n-1, ds_canh[i])) && (chu_trinh(r_dau, r_cuoi))){
+			PA[n-1]= ds_canh[i];
+			break; //Ket thuc vi PA da co du n canh, tao thanh chu trinh
+		}
+	}
+}
+
+int main(){
+	canh ds_canh[size];
+	int n;
+		
+	printf("Phuong an TSP dung thuat toan THAM AN:\n");
+	read_file("TSP.txt", ds_canh, &n);
+	printf("Danh sach cac canh cua do thi:\n");
+	in_ds_canh(ds_canh, n*(n-1)/2, 0);
+	
+	bubble_sort(ds_canh, n*(n-1)/2);
+	printf("\nDanh sach cac canh cua do thi da SAP XEP:\n");
+	in_ds_canh(ds_canh, n*(n-1)/2, 0);
+	
+	canh PA[n];
+	greedy(ds_canh, n, PA);
+		
+	printf("\nPHUONG AN\n");
+	in_ds_canh(PA, n, 1);
+	
+	return 0;
+}
+
+// Thuat toan NHANH CAN: 1581
+
+#include <stdio.h>
+#define size 30
 
 
+typedef struct {
+	float do_dai;
+	int dau, cuoi;
+	int da_dung;
+} canh;
 
+void read_file(char file_name[], canh a[][size], int *n){
+	int i,j;
+	FILE *f;
+	f=fopen(file_name, "r");
+	if (f==NULL){
+		printf("Loi mo file!!!\n");
+		return;
+	}
+	
+	fscanf(f,"%d",n); // Doc so dinh cua do thi n
+	
+	for(i=0; i<*n; i++)
+		for(j=0; j<*n; j++){
+			fscanf(f,"%f",&a[i][j].do_dai); 
+				a[i][j].dau=i;
+				a[i][j].cuoi=j;
+				a[i][j].da_dung=0;;
+			}
+	fclose(f);
+}
 
+void in_ma_tran(canh a[][size], int n){
+	int i,j;
+	printf("\nMa tran TRONG SO cua do thi\n");
+	for(i=0; i<n; i++){
+		for(j=0; j<n; j++)
+			printf(" %c%c =%5.2f  ",a[i][j].dau+97, a[i][j].cuoi+97, a[i][j].do_dai);
+		printf("\n");
+	}
+}
+
+void in_PA(canh PA[], int n){
+	int i;
+	float sum=0.0;
+	printf("\nPHUONG AN TIM DUOC:\n");
+	for(i=0; i<n; i++){
+		sum+= PA[i].do_dai;
+		printf(" Canh %c%c = %5.2f\n", PA[i].dau+97, PA[i].cuoi+97, PA[i].do_dai);
+    }  
+    printf("CHU TRINH : ");
+	for(i=0; i<n; i++){
+		printf("%c",PA[i].dau+97);
+		printf("-> ");
+    }  
+	printf("%c",PA[0].dau+97);    
+	printf("\nTong do dai cac canh cua chu trinh = %5.2f\n", sum);
+}
+
+// Tim canh nho nhat trong so cac canh chua them vao chu trinh
+
+float canh_NN(canh a[][size], int n){
+	float Cmin=3.40282e+38;
+	int i,j;
+	for(i=0; i<n; i++)
+		for(j=0; j<n; j++)
+			if(i!=j && !a[i][j].da_dung && a[i][j].do_dai<Cmin)	
+				Cmin= a[i][j].do_dai;
+	return Cmin;
+}
+	
+float can_duoi(canh a[][size], float TGT, int n, int i){
+	
+	return TGT+ (n-i)*canh_NN(a,n);
+}
+
+// Ghi nhan phuong an tot nhat tam thoi
+
+void Cap_Nhat_PA_TNTT(canh a[][size], int n, float TGT, float *GNNTT, canh x[], canh PA[]){
+	 int i;
+	 // mang x da co n-1 canh tu x[0] den x[n-2]
+	 x[n-1]=a[x[n-2].cuoi][x[0].dau]; // Noi dinh cuoi cua x[n-2] voi dinh dau cua x[0] de co chu trinh
+	 TGT= TGT + x[n-1].do_dai;		// Cong them vao TGT do dai cua canh noi dinh cuoi voi dinh dau
+	 	 if(*GNNTT > TGT){
+		 *GNNTT = TGT;
+		 for(i=0; i<n; i++)
+		 	PA[i]=x[i];
+	 }
+}
+	
+// Gia su ta co mot phuong an thanh phan x, voi k canh
+// Neu ta di toi dinh ke_tiep ma dinh ke_tiep nay trung voi mot dinh dau cua mot canh nao do
+// thi tao thanh chu trinh
+
+int co_chu_trinh(canh x[], int k, int ke_tiep){
+	int i=0, co_CT=0;
+	while (i<k && !co_CT)
+		if(ke_tiep==x[i].dau) co_CT=1;
+		else i++;
+	return co_CT;
+}
+
+void Nhanh_Can(canh a[][size], int n, int i, int dau, float *TGT, float *CD, float *GNNTT, canh x[], canh PA[]){
+	 int j; 	// j la dinh ke tiep 
+	 for(j=0; j<n; j++) 	
+		
+		if (dau!=j && !a[dau][j].da_dung && !co_chu_trinh(x,i,j)){
+		// Ung voi mot gia tri cua j la mot nut tren cay 
+	 	// Tinh 2 dai luong cua mot nut trong
+	 		
+		 *TGT = *TGT + a[dau][j].do_dai;
+		 *CD = can_duoi(a, *TGT, n, i+1);
+		  if(*CD < *GNNTT){ 	// Neu CD >= GNNTT thi cat tia 
+		  // Neu khong co dieu kien nay thi chuong trinh la VET CAN
+		  	x[i] = a[dau][j];
+		  	a[dau][j].da_dung=1;
+		  	a[j][dau].da_dung=1;
+		  	
+		   	if(i==n-2) { // Da xet het tat ca cac dinh nhung duong di moi co n-1 canh
+			   	Cap_Nhat_PA_TNTT(a, n, *TGT, GNNTT, x, PA);
+	    	}   	
+		 	else
+		 		Nhanh_Can(a, n, i+1, j, TGT, CD, GNNTT, x, PA); //Xet nut con cua nut i
+	 	}
+	 // Quay lui xet nut khac (ung voi gia tri khac cua j)
+	 *TGT = *TGT - a[dau][j].do_dai;	// Tra lai Tong gia tri cua nut cha
+	 a[dau][j].da_dung=0;	// Tra lai Canh vua xet la chua su dung	 
+	 a[j][dau].da_dung=0;
+    }	
+}
+	
+void reset(canh a[][size], int n){
+	int i,j;
+	for(i=0; i<n; i++)
+		for(j=0; j<n; j++)
+			a[i][j].da_dung=0;
+}
+	
+int main(){
+	canh a[size][size];
+	int n;
+	printf("\nPhuong an TSP dung thuat toan NHANH CAN:\n");
+	read_file("TSP1.txt",a,&n);
+	canh PA[n];
+	canh x[n];
+	char tpxp, yn;
+	while (1){
+		fflush(stdin);
+		in_ma_tran(a,n);
+		float TGT=0.0, CD = 0.0, GNNTT = 3.40282e+38;
+		printf("\nXuat phat tu thanh pho nao? ");
+		printf("\n Nhap mot trong cac thanh pho tu a den %c: ", n-1+97);
+		scanf("%c", &tpxp);
+		Nhanh_Can(a, n, 0, tpxp-97, &TGT, &CD, &GNNTT, x, PA);
+		in_PA(PA,n);
+		fflush(stdin);
+		printf("\nTiep tuc Y/N? ");
+		scanf("%c", &yn);
+		if (yn == 'N' || yn == 'n')
+			break;
+		reset(a,n);
+    }	    	
+	return 0;
+}
+
+// Bai toan Tam giac so 1747
+// Du lieu cho trong file tam_giac_so.txt
+// Giai bai toan bang thuat toan QUY HOACH DONG
+
+#include <stdio.h>
+#define size 50
+
+void ReadData(int a[][size], int *n){
+	FILE *f;
+	f=fopen("tam_giac_so1.txt", "r");
+	if(f==NULL){
+		printf("Loi mo file!!!\n");
+		return;
+	}
+	int i=0, j;	
+	while (!feof(f)){
+		for(j=0; j<=i; j++)
+			fscanf(f, "%d", &a[i][j]); 
+		i++;
+		}
+	*n=i;
+	fclose(f);
+}
+
+void PrintData(int a[][size], int n){
+	int i,j;
+	printf("\nTAM GIAC SO da cho\n");
+	for(i=0; i<n; i++){
+		for(j=0; j<=i; j++)
+			printf("%5d", a[i][j]);
+		printf("\n");
+	}
+}
+
+int CS_max(int F[][size], int i, int j){
+	if (j==0)
+		return (F[i-1][0]>F[i-1][1])? 0:1;
+	if (j==i)
+		return i-1;
+	if (j==i-1)
+		return (F[i-1][i-2]>F[i-1][i-1])? i-2:i-1;
+	
+	if (F[i-1][j-1]>F[i-1][j]&&F[i-1][j-1]>F[i-1][j+1])
+		return j-1;
+	if (F[i-1][j]>F[i-1][j-1]&&F[i-1][j]>F[i-1][j+1])
+		return j;
+	if (F[i-1][j+1]>F[i-1][j]&&F[i-1][j+1]>F[i-1][j-1])
+		return j+1;
+}
+
+// Dung cong thuc truy hoi de tao bang F
+void Tao_Bang(int a[][size], int n, int F[][size]){
+ 	int i, j;
+	 // 2 dong dau tien cua bang F xac dinh cu the
+ 		F[0][0]= a[0][0];
+ 		F[1][0]= F[0][0] + a[1][0];
+ 		F[1][1]= F[0][0] + a[1][1];
+ 	// Tu dong thu 3 (i=2) tro ve sau
+	// Moi phan tu cua bang F duoc xac dinh nho vao dong truoc do (truy hoi)
+	 for(i=2; i<n; i++)
+		 for(j=0; j<=i; j++){
+			 int k=CS_max(F,i,j);
+			 F[i][j] = F[i-1][k] + a[i][j];
+	 }
+}
+
+void In_Bang(int n, int F[][size]){
+	int i, j;
+	printf("\nBang F\n");
+	for(i=0; i<n; i++){
+		for(j=0; j<=i; j++)
+		 	printf("%5d", F[i][j]);
+		printf("\n");
+	}
+}
+
+int CS_max_dong_cuoi(int F[], int j){
+	int somax=F[0];
+	int maxindex=0;
+	int k;
+	
+	for(k=1; k<=j; k++)
+		if (F[k]>somax){
+			somax=F[k];
+			maxindex=k;
+		}
+	return maxindex;
+}
+
+// Tra bang F, nhung xac dinh phuong an tu trong tam giac so (bang a)
+
+void Tra_Bang(int a[][size], int n, int F[][size], int PA[]){
+	int i,j;
+	// Xac dinh chi so j cua phan tu lon nhat o dong cuoi trong bang F
+	j=CS_max_dong_cuoi(F[n-1],n-1);
+	
+	// Phan tu cuoi cung cua duong di tuc la PA[n-1]
+	// la phan tu cua dong cuoi cung bang a, ung voi cot j vua tim thay o tren
+	PA[n-1]=a[n-1][j];
+	
+	// Xet cac dong cua bang F, tu dong n-1 den dong 1
+	// De xac dinh cac phan tu cua PA tu PA[n-2] den PA[0]
+	
+	for(i=n-1; i>=1; i--){
+		
+		// Can cu vao chi so cot j cua dong cuoi (dong i) cua bang F
+		// ma xac dinh chi so cot j cua dong tren (dong i-1) cua bang F
+		
+		j=CS_max(F,i,j);
+		
+		// PA[i-1] la phan tu cua dong i-1 cua tam giac so a,
+		// ung voi cot j vua tim thay o tren
+		
+		PA[i-1]=a[i-1][j];
+	}
+}
+
+int GiaPA(int PA[], int n){
+	int i;
+	int sum=0;
+	for(i=0; i<n; i++)	sum+=PA[i];
+	return sum;
+}
+
+void PrintPA(int PA[], int n){
+	int i;
+	printf("\nPhuong an la duong di qua cac so : ");
+	printf("\%d", PA[0]);
+	for(i=1; i<n; i++)	printf(" => %d", PA[i]);
+	printf("\n\nTong cac so tren duong di la %d\n", GiaPA(PA,n));
+}	
+
+int main(){
+	int a[size][size]; //Luu tam giac so
+	int n;
+	
+	printf("\nBai toan TAM GIAC SO dung thuat toan QUY HOACH DONG\n");
+	ReadData(a,&n);
+	PrintData(a,n);
+	
+	int PA[n]; 	//Phuong an toi uu: mang co n phan tu
+	int F[n][size]; 	//Bang F: mang 2 chieu co n dong, n cot
+	
+	Tao_Bang(a,n,F);
+	In_Bang(n,F);
+	
+	Tra_Bang(a,n,F,PA);
+	PrintPA(PA,n);
+	
+	return 0;
+}
 
 
